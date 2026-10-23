@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>العرصة</title>
+<title>المندوس</title>
 <script src="config.js"></script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -126,19 +126,19 @@ footer{margin-top:28px;text-align:center;font-size:.8rem;color:var(--muted)}
 <div class="wrap" dir="rtl" lang="ar">
   <header class="head">
     <div class="brand">
-      <div class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="currentColor"/><path d="M14 30h36l-4-12H18z" fill="#fff"/><path d="M14 30c0 3 2.7 5 6 5s6-2 6-5c0 3 2.7 5 6 5s6-2 6-5c0 3 2.7 5 6 5s6-2 6-5" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M18 36v12h28V36" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><rect x="28" y="40" width="8" height="8" fill="#fff"/></svg>العرصة</div>
+      <div class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="currentColor"/><path d="M14 28c0-8 8-13 18-13s18 5 18 13z" fill="#fff" opacity=".9"/><rect x="14" y="28" width="36" height="22" rx="3" fill="#fff"/><path d="M14 36h36M24 28v22M40 28v22" stroke="currentColor" stroke-width="2.5"/><rect x="28" y="32" width="8" height="9" rx="2" fill="#e0a43a"/><circle cx="32" cy="36" r="1.6" fill="currentColor"/></svg>المندوس</div>
       <span class="sp"></span>
       <button class="ib" id="favBtn" type="button">♡ مفضلتي <span class="cnt num" id="favN"></span></button>
       <button class="ib" id="mineBtn" type="button">📋 إعلاناتي</button>
     </div>
-    <div class="search"><span aria-hidden="true">🔎</span><input id="q" type="search" placeholder="دوّر: كنبة، آيفون، خنجر، لاندكروزر…" aria-label="بحث"></div>
+    <div class="search"><span aria-hidden="true">🔎</span><input id="q" type="search" placeholder="دوّر: خنجر، زمرد، مندوس…" aria-label="بحث"></div>
   </header>
 
   <div class="cats" id="cats" role="group" aria-label="الأقسام"></div>
 
   <section class="mandoos" id="mandoosBanner">
-    <div><h2>🏺 ركن المندوس</h2><p>تحف وقطع قديمة من بيوت عُمان: خناجر، فضيات، مناديس، أواني نحاس، وكل شي له قصة.</p></div>
-    <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><span class="art" aria-hidden="true">🗝️</span><button type="button" id="goMandoos">افتح الركن</button></div>
+    <div><h2>🪵 كنوز من بيوت عُمان</h2><p>خناجر وفضيات وأحجار كريمة وعملات ونحاسيات، وكل شي قديم له قصة. بِع واشترِ مباشرة بدون وسيط.</p><p style="font-size:.82rem;margin-top:8px;opacity:.8">⚠️ يُمنع بيع القطع الأثرية المحمية بالقانون.</p></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><span class="art" aria-hidden="true">🗝️</span><button type="button" id="goMandoos">＋ اعرض قطعتك</button></div>
   </section>
 
   <div class="filters">
@@ -151,7 +151,7 @@ footer{margin-top:28px;text-align:center;font-size:.8rem;color:var(--muted)}
   <div class="grid" id="grid"></div>
 
   <div style="display:flex;justify-content:center;margin-top:16px"><button class="btn ghost" type="button" id="moreBtn" hidden>عرض المزيد</button></div>
-  <footer>العرصة · سلطنة عُمان · © سالم الجابري · <a href="mailto:design.omani1@gmail.com" style="color:inherit" dir="ltr">design.omani1@gmail.com</a><br><a href="privacy.html" style="color:inherit">الخصوصية والشروط</a></footer>
+  <footer>المندوس · سلطنة عُمان · © سالم الجابري · <a href="mailto:design.omani1@gmail.com" style="color:inherit" dir="ltr">design.omani1@gmail.com</a><br><a href="privacy.html" style="color:inherit">الخصوصية والشروط</a></footer>
 </div>
 <button class="fab" id="sellBtn" type="button">＋ أعلن مجانًا</button>
 <div id="root"></div>
@@ -170,9 +170,9 @@ const Cap = window.Capacitor, NATIVE = !!(Cap && Cap.isNativePlatform && Cap.isN
 const CONTACT = window.AR_CONTACT || 'design.omani1@gmail.com';
 
 const GOV = {"مسقط": ["مسقط", "مطرح", "بوشر", "السيب", "العامرات", "قريات"], "ظفار": ["صلالة", "طاقة", "مرباط", "رخيوت", "ثمريت", "ضلكوت", "المزيونة", "مقشن", "شليم وجزر الحلانيات", "سدح"], "مسندم": ["خصب", "دبا", "بخا", "مدحاء"], "البريمي": ["البريمي", "محضة", "السنينة"], "الداخلية": ["نزوى", "بهلاء", "منح", "الحمراء", "أدم", "إزكي", "سمائل", "بدبد", "الجبل الأخضر"], "شمال الباطنة": ["صحار", "شناص", "لوى", "صحم", "الخابورة", "السويق"], "جنوب الباطنة": ["الرستاق", "العوابي", "نخل", "وادي المعاول", "بركاء", "المصنعة"], "جنوب الشرقية": ["صور", "الكامل والوافي", "جعلان بني بو حسن", "جعلان بني بو علي", "مصيرة"], "شمال الشرقية": ["إبراء", "المضيبي", "بدية", "القابل", "وادي بني خالد", "دماء والطائيين"], "الظاهرة": ["عبري", "ينقل", "ضنك"], "الوسطى": ["هيماء", "محوت", "الدقم", "الجازر"]};
-const CATS = [ ['all','🧺','الكل'], ['furn','🛋️','أثاث'], ['home','🧊','أجهزة منزلية'], ['elec','📱','إلكترونيات'], ['cars','🚗','سيارات'], ['old','🏺','المندوس'], ['misc','📦','متفرقات'] ];
+const CATS = [ ['all','🗝️','الكل'], ['khanjar','🗡️','خناجر وسيوف'], ['silver','💍','فضيات وحُلي'], ['gems','💎','أحجار كريمة'], ['coins','🪙','عملات وطوابع'], ['brass','🏺','نحاسيات وفخار'], ['wood','🚪','خشبيات ومناديس'], ['vintage','📻','راديوهات وساعات'], ['books','📚','كتب وصور قديمة'], ['cars','🚗','سيارات كلاسيكية'], ['misc','🧺','متفرقات تراثية'] ];
 const catName = id => (CATS.find(c => c[0] === id) || [, , ''])[2];
-const COND = [ ['new','جديد'], ['excellent','ممتاز'], ['good','جيد'], ['used','مستعمل'], ['antique','قديم / تحفة'] ];
+const COND = [ ['excellent','ممتازة'], ['good','جيدة'], ['worn','عليها أثر الزمن'], ['restored','مرمّمة'], ['needs','تحتاج ترميم'] ];
 const condName = id => (COND.find(c => c[0] === id) || [, ''])[1];
 
 /* ---------------- Supabase ---------------- */
@@ -216,7 +216,7 @@ async function load(reset = true){
 let qT; const reload = () => { clearTimeout(qT); qT = setTimeout(() => load(true), 300); };
 
 /* ---------- filters ---------- */
-function drawCats(){ $('cats').replaceChildren(...CATS.map(([id, ic, n]) => el('button', { class:'cat', type:'button', 'aria-pressed':String(S.cat === id), onclick:() => { S.cat = id; saveS(); drawCats(); load(true); } }, el('b', { text:ic }), n))); $('mandoosBanner').hidden = S.cat === 'old'; }
+function drawCats(){ $('cats').replaceChildren(...CATS.map(([id, ic, n]) => el('button', { class:'cat', type:'button', 'aria-pressed':String(S.cat === id), onclick:() => { S.cat = id; saveS(); drawCats(); load(true); } }, el('b', { text:ic }), n))); $('mandoosBanner').hidden = S.cat !== 'all'; }
 function drawGov(){
   $('gov').replaceChildren(el('option', { value:'', text:'كل عُمان' }), ...Object.keys(GOV).map(g => el('option', { value:g, text:g, selected:g === S.gov })));
   $('area').hidden = !S.gov;
@@ -226,7 +226,7 @@ $('gov').onchange = () => { S.gov = $('gov').value; S.area = ''; saveS(); drawGo
 $('area').onchange = () => { S.area = $('area').value; saveS(); load(true); };
 $('sort').value = S.sort; $('sort').onchange = () => { S.sort = $('sort').value; saveS(); load(true); };
 $('q').oninput = () => { S.q = $('q').value; reload(); };
-$('goMandoos').onclick = () => { S.cat = 'old'; saveS(); drawCats(); load(true); $('cats').scrollIntoView({ behavior:'smooth', block:'start' }); };
+$('goMandoos').onclick = () => $('sellBtn').click();
 $('moreBtn').onclick = () => load(false);
 
 /* ---------- grid ---------- */
@@ -262,7 +262,7 @@ function drawCounts(){ $('favN').textContent = FAV.length || ''; }
 /* ---------- sheets ---------- */
 function sheet(build){ const s = el('div', { class:'scrim' }), b = el('div', { class:'sheet', role:'dialog', 'aria-modal':'true', dir:'rtl' }); const close = () => s.remove(); s.onclick = e => { if(e.target === s) close(); }; const add = b.append.bind(b); b.append = (...k) => add(...k.flat().filter(c => c != null)); build(b, close); s.append(b); $('root').replaceChildren(s); return close; }
 function sure(e, msg, fn){ const b = e.currentTarget; if(!b.dataset.sure){ b.dataset.sure = 1; b.dataset.old = b.textContent; b.textContent = msg; setTimeout(() => { if(b.isConnected){ delete b.dataset.sure; b.textContent = b.dataset.old; } }, 3000); return; } fn(); }
-function msgFor(a){ return 'السلام عليكم، شفت إعلانك في العرصة: «' + a.title + '» بـ ' + fmtPrice(a.price) + '. هل الغرض للحين متوفر؟'; }
+function msgFor(a){ return 'السلام عليكم، شفت إعلانك في المندوس: «' + a.title + '» بـ ' + fmtPrice(a.price) + '. هل الغرض للحين متوفر؟'; }
 function openAd(a){
   sheet((b, close) => {
     const p = normPhone(a.phone), fv = isFav(a.id), mine = ME && normPhone(ME.phone) === p;
@@ -288,11 +288,11 @@ function openAd(a){
 function report(a){
   sheet((b, close) => {
     let why = '';
-    const opts = ['نصب أو احتيال', 'الصور مو حقيقية', 'الغرض انباع', 'محتوى غير لائق', 'غرض ممنوع', 'غير ذلك'];
+    const opts = ['نصب أو احتيال', 'قطعة مقلّدة', 'قطعة أثرية ممنوعة', 'الصور مو حقيقية', 'الغرض انباع', 'محتوى غير لائق', 'غير ذلك'];
     const ch = el('div', { class:'chips' });
     const draw = () => ch.replaceChildren(...opts.map(o => el('button', { class:'chip', type:'button', 'aria-pressed':String(why === o), text:o, onclick:() => { why = o; draw(); } })));
     draw();
-    b.append(el('h3', { text:'🚩 إبلاغ عن «' + a.title + '»' }), ch, el('p', { class:'hint', text:'البلاغ يوصل لإدارة العرصة ونراجعه خلال 24 ساعة، والإعلان بيختفي عندك على طول.' }),
+    b.append(el('h3', { text:'🚩 إبلاغ عن «' + a.title + '»' }), ch, el('p', { class:'hint', text:'البلاغ يوصل لإدارة المندوس ونراجعه خلال 24 ساعة، والإعلان بيختفي عندك على طول.' }),
       el('div', { class:'end' }, el('button', { class:'btn ghost', type:'button', text:'رجوع', onclick:() => openAd(a) }), el('button', { class:'btn', type:'button', text:'أرسل البلاغ', onclick:async () => {
         if(!why) return toast('اختار السبب');
         try{ await rpc('ar_report', { p_id:a.id, p_reason:why }); }catch(e){ return toast(e.message); }
@@ -318,7 +318,7 @@ function accountSheet(then){
     b.append(el('h3', { text:'🧺 حساب البائع' }), el('p', { class:'hint', text:'مرة وحدة بس. المشترين يتصلون فيك أو يراسلونك على هالرقم مباشرة. ما تحتاج واتساب ولا أي تطبيق ثاني.' }),
       fld('اسمك (يطلع للمشترين)', name), fld('رقم الجوال', phone), go,
       el('button', { class:'btn ghost', type:'button', text:'عندي حساب، أدخل برمزي', onclick:() => loginSheet(then) }),
-      el('p', { class:'hint', text:'بالتسجيل توافق على شروط العرصة: إعلانات حقيقية بس، بدون أغراض ممنوعة أو مسروقة، والمخالف ينحذف حسابه.' }),
+      el('p', { class:'hint', text:'بالتسجيل توافق على شروط المندوس: إعلانات حقيقية بس، بدون قطع أثرية أو مسروقة أو مقلّدة تنباع على إنها أصلية، والمخالف ينحذف حسابه.' }),
       el('a', { href:'privacy.html', class:'linkb', target:'_blank', text:'الخصوصية والشروط' }));
     go.onclick = async () => {
       const ph = normPhone(phone.value);
@@ -400,7 +400,7 @@ function sell(edit){
   if(!ME) return accountSheet(() => sell(edit));
   sheet((b, close) => {
     const d = edit || LS.get('arsa-draft', {});
-    let cat = d.cat || (S.cat !== 'all' ? S.cat : 'furn'), cond = d.cond || 'good';
+    let cat = d.cat || (S.cat !== 'all' ? S.cat : 'khanjar'), cond = d.cond || 'good';
     // photos: {path} already uploaded, or {blob, url} new
     let photos = edit ? edit.photos.map(p => ({ path:p, url:photoUrl(p) })) : [];
     const I = (id, ph, extra = {}) => el('input', { class:'inp', id, placeholder:ph, ...extra });
@@ -412,7 +412,7 @@ function sell(edit){
     const fillArea = () => area.replaceChildren(...GOV[gov.value].map(a => el('option', { value:a, text:a, selected:a === (d.area || S.area) })));
     gov.onchange = fillArea; fillArea();
     const catBox = el('div', { class:'chips' }), condBox = el('div', { class:'chips' });
-    const drawC = () => { catBox.replaceChildren(...CATS.slice(1).map(([id, ic, n]) => el('button', { class:'chip', type:'button', 'aria-pressed':String(cat === id), text:ic + ' ' + n, onclick:() => { cat = id; if(id === 'old') cond = 'antique'; drawC(); } }))); condBox.replaceChildren(...COND.map(([id, n]) => el('button', { class:'chip', type:'button', 'aria-pressed':String(cond === id), text:n, onclick:() => { cond = id; drawC(); } }))); };
+    const drawC = () => { catBox.replaceChildren(...CATS.slice(1).map(([id, ic, n]) => el('button', { class:'chip', type:'button', 'aria-pressed':String(cat === id), text:ic + ' ' + n, onclick:() => { cat = id; drawC(); } }))); condBox.replaceChildren(...COND.map(([id, n]) => el('button', { class:'chip', type:'button', 'aria-pressed':String(cond === id), text:n, onclick:() => { cond = id; drawC(); } }))); };
     drawC();
     const thumbs = el('div', { class:'thumbs' }), file = el('input', { type:'file', accept:'image/*', multiple:true, id:'sFile', hidden:true });
     const drawTh = () => { thumbs.replaceChildren(...photos.map((p, i) => el('div', { class:'th' }, el('img', { src:p.url, alt:'صورة ' + (i + 1) }), el('button', { class:'x', type:'button', 'aria-label':'شيل الصورة', text:'✕', onclick:() => { photos.splice(i, 1); drawTh(); } }))), photos.length < 6 ? el('label', { class:'addph', for:'sFile', 'aria-label':'أضف صور', text:'📷' }) : null); };
@@ -421,7 +421,7 @@ function sell(edit){
     const keepDraft = () => { if(!edit) LS.set('arsa-draft', { title:title.value, price:price.value, descr:desc.value, cat, cond, gov:gov.value, area:area.value }); };
     [title, price, desc].forEach(x => x.addEventListener('input', keepDraft));
     const go = el('button', { class:'btn', type:'button', text:edit ? 'احفظ التعديل' : 'انشر الإعلان' });
-    b.append(el('h3', { text:edit ? '✏️ تعديل الإعلان' : '＋ أعلن في العرصة' }),
+    b.append(el('h3', { text:edit ? '✏️ تعديل الإعلان' : '＋ اعرض قطعتك في المندوس' }),
       el('div', { class:'field' }, el('label', { text:'الصور (لين 6)' }), thumbs, file, el('p', { class:'hint', text:'الصورة الأولى هي اللي تطلع في القائمة. صوّر الغرض الحقيقي في مكان فيه نور.' })),
       fld('العنوان', title),
       el('div', { class:'field' }, el('label', { text:'القسم' }), catBox),

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#b0521c">
-<title>إدارة العرصة</title>
+<title>إدارة المندوس</title>
 <style>
 /* Admin: passcode gate (same passcode as Suqya), then providers in tabs: active / expiring / expired / blocked, plus reports */
 :root{
@@ -49,7 +49,7 @@ a.tel{color:var(--brand);font-weight:800;text-decoration:none;direction:ltr;disp
 <body>
 <div class="wrap">
   <div id="gate" hidden>
-    <h1>🔐 إدارة العرصة</h1>
+    <h1>🔐 إدارة المندوس</h1>
     <p class="sub">اكتب رمز المدير (نفس رمز إدارة سُقيا).</p>
     <div class="card">
       <label for="pass" style="font-weight:800">رمز المدير</label>
@@ -59,7 +59,7 @@ a.tel{color:var(--brand);font-weight:800;text-decoration:none;direction:ltr;disp
   </div>
   <div id="panel" hidden>
     <div class="top">
-      <div><h1>🧺 إعلانات العرصة</h1><p class="sub">راجع البلاغات أول بأول. 3 بلاغات تخفي الإعلان لحاله لين تراجعه.</p></div>
+      <div><h1>🗝️ إعلانات المندوس</h1><p class="sub">راجع البلاغات أول بأول. 3 بلاغات تخفي الإعلان لحاله لين تراجعه.</p></div>
       <button class="btn ghost" type="button" id="reload" aria-label="تحديث">↻</button>
     </div>
     <div class="tabs" id="tabs" style="grid-template-columns:repeat(4,minmax(0,1fr))">
@@ -87,7 +87,7 @@ async function rpc(fn, args){
   return j;
 }
 const ss = { get(){ try{ return sessionStorage.getItem('ar-admin') || ''; }catch(e){ return ''; } }, set(v){ try{ v ? sessionStorage.setItem('ar-admin', v) : sessionStorage.removeItem('ar-admin'); }catch(e){} } };
-const CATS = { furn:'أثاث', home:'أجهزة منزلية', elec:'إلكترونيات', cars:'سيارات', old:'المندوس', misc:'متفرقات' };
+const CATS = { khanjar:'خناجر وسيوف', silver:'فضيات وحُلي', gems:'أحجار كريمة', coins:'عملات وطوابع', brass:'نحاسيات وفخار', wood:'خشبيات ومناديس', vintage:'راديوهات وساعات', books:'كتب وصور قديمة', cars:'سيارات كلاسيكية', misc:'متفرقات تراثية' };
 let PASS = ss.get(), ROWS = [], REPS = [], TAB = 'hidden';
 const img = p => SB.url + '/storage/v1/object/public/arsa/' + p;
 const fDate = d => new Date(d).toLocaleDateString('ar-OM-u-nu-latn', { day:'numeric', month:'short' });

@@ -1,4 +1,4 @@
--- العرصة: قاعدة بيانات الإعلانات + تخزين الصور — انسخ الملف كامل والصقه في SQL Editor (Database مو Logs) واضغط Run
+-- المندوس: قاعدة بيانات الإعلانات + تخزين الصور — انسخ الملف كامل والصقه في SQL Editor (Database مو Logs) واضغط Run
 -- نفس مشروع سُقيا وخدماتي، ونفس رمز المدير. تقدر تشغّله أكثر من مرة.
 create extension if not exists pgcrypto with schema extensions;
 
@@ -17,9 +17,9 @@ create table if not exists public.ar_ads (
   updated_at timestamptz not null default now(),
   expires_at timestamptz not null default now() + interval '60 days',
   title      text not null check (char_length(title) between 3 and 70),
-  cat        text not null check (cat in ('furn','home','elec','cars','old','misc')),
+  cat        text not null check (cat in ('khanjar','silver','gems','coins','brass','wood','vintage','books','cars','misc')),
   price      numeric(10,3) not null check (price >= 0 and price < 10000000),
-  cond       text not null check (cond in ('new','excellent','good','used','antique')),
+  cond       text not null check (cond in ('excellent','good','worn','restored','needs')),
   gov        text not null check (char_length(gov) <= 40),
   area       text not null check (char_length(area) <= 40),
   descr      text not null default '' check (char_length(descr) <= 1000),
