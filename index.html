@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>العرصة</title>
+<script src="config.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;800&family=Noto+Naskh+Arabic:wght@500;600;700&display=swap">
+<style>
+/* Layout: phone-first souq. Sticky top (logo, search), category strip, المندوس banner, filters, then a 2-col listing grid; a listing opens in a bottom sheet with photos + call/SMS/WhatsApp. Copper on cool stone, deep ink text. */
+:root{
+  --bg:#f2f1ee; --surface:#ffffff; --sunk:#e8e6e1; --line:#d9d5cd; --fg:#1f1b17; --muted:#6b645b;
+  --copper:#b0521c; --copper-ink:#ffffff; --copper-soft:#f6e6da; --palm:#2f6b4f; --palm-soft:#dfeee6; --wa:#1f9d55; --bad:#b4313b; --star:#d99a00;
+  --display:"Alexandria","Noto Naskh Arabic",Tahoma,sans-serif;
+  --body:"Noto Naskh Arabic","Geeza Pro","Traditional Arabic",serif;
+  --r:16px; --shadow:0 1px 2px rgba(31,27,23,.06),0 8px 22px rgba(31,27,23,.08);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14120f; --surface:#1e1b17; --sunk:#181512; --line:#332d27; --fg:#f1ece6; --muted:#a79e93;
+  --copper:#e98a4f; --copper-ink:#1a1410; --copper-soft:#3a2518; --palm:#7cc4a0; --palm-soft:#1c3328; --wa:#3cc177; --bad:#f08890; --star:#f3c34a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 26px rgba(0,0,0,.4); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14120f; --surface:#1e1b17; --sunk:#181512; --line:#332d27; --fg:#f1ece6; --muted:#a79e93;
+  --copper:#e98a4f; --copper-ink:#1a1410; --copper-soft:#3a2518; --palm:#7cc4a0; --palm-soft:#1c3328; --wa:#3cc177; --bad:#f08890; --star:#f3c34a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 26px rgba(0,0,0,.4); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font:600 17px/1.65 var(--body)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+h1,h2,h3{margin:0;text-wrap:balance}
+.wrap{max-width:900px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 110px}
+
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.head{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px 10px;display:flex;flex-direction:column;gap:10px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .logo{display:flex;align-items:center;gap:8px;font:800 1.65rem/1 var(--display);color:var(--copper)}
+.brand .logo svg{width:38px;height:38px}
+.brand .sp{flex:1}
+.demo{font:700 .7rem var(--display);background:var(--copper-soft);color:var(--copper);padding:3px 9px;border-radius:999px}
+.ib{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:7px 11px;font-weight:700;font-size:.85rem;display:inline-flex;align-items:center;gap:5px}
+.cnt:not(:empty){background:var(--copper);color:var(--copper-ink);border-radius:999px;padding:0 7px;font-size:.75rem}
+.search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0 14px}
+.search input{flex:1;min-width:0;border:0;background:none;padding:12px 0;outline:none}
+
+.cats{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;margin-top:4px}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:8px 12px;display:flex;flex-direction:column;align-items:center;gap:0;min-width:78px;font-weight:700;font-size:.82rem;color:var(--muted)}
+.cat b{font-size:1.5rem;line-height:1.3}
+.cat[aria-pressed="true"]{border-color:var(--copper);color:var(--copper);background:var(--copper-soft)}
+
+.mandoos{margin-top:14px;border-radius:20px;padding:18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;background:linear-gradient(135deg,#3b2414,#6e3a17);color:#fbe9d8;box-shadow:var(--shadow)}
+.mandoos h2{font:800 1.3rem/1.3 var(--display);color:#fff}
+.mandoos p{margin:4px 0 0;font-size:.92rem;opacity:.9}
+.mandoos button{border:0;border-radius:12px;padding:10px 14px;font-weight:700;background:#f2b46a;color:#2b170a}
+.mandoos .art{font-size:3rem;line-height:1}
+
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.sel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:9px 10px;min-width:0;flex:1 1 120px}
+.reshead{display:flex;align-items:baseline;gap:10px;margin:16px 0 10px}
+.reshead h2{font:700 1.1rem var(--display);flex:1}
+.reshead small{color:var(--muted)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;text-align:start;padding:0;position:relative}
+.card .img{aspect-ratio:4/3;max-width:100%;background:var(--sunk);display:block;width:100%;object-fit:cover}
+.card .body{padding:9px 11px 11px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.card .price{font:800 1.1rem var(--display);color:var(--copper)}
+.card .t{font-weight:700;line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.card .m{font-size:.76rem;color:var(--muted)}
+.card .heart{position:absolute;top:8px;inset-inline-start:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#1f1b17;font-size:1rem;display:grid;place-items:center}
+.card .heart.on{color:#d0343b}
+.card .tag{position:absolute;top:8px;inset-inline-end:8px}
+.pill{display:inline-block;font-size:.7rem;font-weight:700;border-radius:999px;padding:1px 8px;background:var(--sunk);color:var(--muted)}
+.pill.palm{background:var(--palm-soft);color:var(--palm)}.pill.cop{background:var(--copper-soft);color:var(--copper)}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:16px;padding:24px;text-align:center;color:var(--muted);grid-column:1 / -1}
+
+.fab{position:fixed;inset-inline-end:max(18px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));border:0;border-radius:999px;padding:14px 22px;background:var(--copper);color:var(--copper-ink);font:800 1.05rem var(--display);box-shadow:0 10px 24px rgba(0,0,0,.28);z-index:20}
+
+.scrim{position:fixed;inset:0;z-index:50;background:rgba(15,12,9,.55);display:grid;place-items:end center}
+.sheet{background:var(--surface);width:min(640px,100%);max-height:94vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px max(18px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:12px}
+.sheet h3{font:800 1.25rem/1.4 var(--display)}
+.gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;border-radius:14px;scrollbar-width:none}
+.gal::-webkit-scrollbar{display:none}
+.gal img{flex:none;width:100%;aspect-ratio:4/3;object-fit:cover;scroll-snap-align:center;border-radius:14px;background:var(--sunk)}
+.bigprice{font:800 1.6rem var(--display);color:var(--copper)}
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+.desc{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+.seller{display:flex;align-items:center;gap:10px;background:var(--sunk);border-radius:14px;padding:10px 12px}
+.seller .av{width:40px;height:40px;border-radius:50%;background:var(--palm);color:#fff;display:grid;place-items:center;font:800 1rem var(--display)}
+.acts{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:700;background:var(--copper);color:var(--copper-ink);display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
+.btn.ghost{background:var(--surface);color:var(--fg);border:1px solid var(--line)}
+.btn.wa{background:var(--wa);color:#fff}
+.linkb{border:0;background:none;padding:4px 2px;color:var(--muted);font-size:.82rem;text-decoration:underline;text-underline-offset:3px}
+.links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:.82rem;font-weight:700;color:var(--muted)}
+.inp{width:100%;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+textarea.inp{min-height:96px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:700;color:var(--muted)}
+.chip[aria-pressed="true"]{border-color:var(--copper);color:var(--copper);background:var(--copper-soft)}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap}
+.thumbs .th{position:relative;width:76px;height:76px}
+.thumbs img{width:76px;height:76px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+.thumbs .x{position:absolute;top:-6px;inset-inline-end:-6px;width:24px;height:24px;border-radius:50%;border:0;background:var(--fg);color:var(--bg);font-size:.8rem}
+.addph{width:76px;height:76px;border:2px dashed var(--line);border-radius:10px;display:grid;place-items:center;color:var(--muted);font-size:1.6rem;cursor:pointer}
+.end{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.hint{font-size:.8rem;color:var(--muted);margin:0}
+footer{margin-top:28px;text-align:center;font-size:.8rem;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);opacity:0;transition:.25s;background:var(--fg);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:700;z-index:90;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:420px){.row2{grid-template-columns:1fr}.mandoos{grid-template-columns:1fr}.mandoos .art{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap" dir="rtl" lang="ar">
+  <header class="head">
+    <div class="brand">
+      <div class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="currentColor"/><path d="M14 30h36l-4-12H18z" fill="#fff"/><path d="M14 30c0 3 2.7 5 6 5s6-2 6-5c0 3 2.7 5 6 5s6-2 6-5c0 3 2.7 5 6 5s6-2 6-5" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M18 36v12h28V36" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><rect x="28" y="40" width="8" height="8" fill="#fff"/></svg>العرصة</div>
+      <span class="sp"></span>
+      <button class="ib" id="favBtn" type="button">♡ مفضلتي <span class="cnt num" id="favN"></span></button>
+      <button class="ib" id="mineBtn" type="button">📋 إعلاناتي</button>
+    </div>
+    <div class="search"><span aria-hidden="true">🔎</span><input id="q" type="search" placeholder="دوّر: كنبة، آيفون، خنجر، لاندكروزر…" aria-label="بحث"></div>
+  </header>
+
+  <div class="cats" id="cats" role="group" aria-label="الأقسام"></div>
+
+  <section class="mandoos" id="mandoosBanner">
+    <div><h2>🏺 ركن المندوس</h2><p>تحف وقطع قديمة من بيوت عُمان: خناجر، فضيات، مناديس، أواني نحاس، وكل شي له قصة.</p></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><span class="art" aria-hidden="true">🗝️</span><button type="button" id="goMandoos">افتح الركن</button></div>
+  </section>
+
+  <div class="filters">
+    <select class="sel" id="gov" aria-label="المحافظة"></select>
+    <select class="sel" id="area" aria-label="الولاية"></select>
+    <select class="sel" id="sort" aria-label="الترتيب"><option value="new">الأحدث</option><option value="low">الأرخص</option><option value="high">الأغلى</option></select>
+  </div>
+
+  <div class="reshead"><h2 id="resTitle">كل الإعلانات</h2><small id="resN" class="num"></small></div>
+  <div class="grid" id="grid"></div>
+
+  <div style="display:flex;justify-content:center;margin-top:16px"><button class="btn ghost" type="button" id="moreBtn" hidden>عرض المزيد</button></div>
+  <footer>العرصة · سلطنة عُمان · © سالم الجابري · <a href="mailto:design.omani1@gmail.com" style="color:inherit" dir="ltr">design.omani1@gmail.com</a><br><a href="privacy.html" style="color:inherit">الخصوصية والشروط</a></footer>
+</div>
+<button class="fab" id="sellBtn" type="button">＋ أعلن مجانًا</button>
+<div id="root"></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const el = (t, a = {}, ...k) => { const e = document.createElement(t); for(const [x, v] of Object.entries(a)){ if(x === 'class') e.className = v; else if(x === 'text') e.textContent = v; else if(x.startsWith('on')) e[x] = v; else if(v !== false && v != null) e.setAttribute(x, v === true ? '' : v); } k.flat().forEach(c => c != null && e.append(c)); return e; };
+const LS = { get(k, d){ try{ const v = JSON.parse(localStorage.getItem(k) || 'null'); return v == null ? d : v; }catch(e){ return d; } }, set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } } };
+function toast(t){ const e = $('toast'); e.textContent = t; e.classList.add('show'); clearTimeout(e._t); e._t = setTimeout(() => e.classList.remove('show'), 2800); }
+const digits = v => String(v || '').replace(/[٠-٩]/g, c => '٠١٢٣٤٥٦٧٨٩'.indexOf(c));
+const normPhone = p => { let d = digits(p).replace(/\D/g, ''); if(d.startsWith('00')) d = d.slice(2); if(/^[79]\d{7}$/.test(d)) d = '968' + d; return d; };
+const fmtPrice = n => +n ? (+n).toLocaleString('en', { maximumFractionDigits:3 }) + ' ر.ع' : 'مجانًا';
+function ago(ts){ const m = Math.round((Date.now() - new Date(ts)) / 6e4); if(m < 60) return 'قبل ' + Math.max(1, m) + ' دقيقة'; const h = Math.round(m / 60); if(h < 24) return 'قبل ' + h + ' ساعة'; const d = Math.round(h / 24); return d === 1 ? 'أمس' : 'قبل ' + d + ' يوم'; }
+const Cap = window.Capacitor, NATIVE = !!(Cap && Cap.isNativePlatform && Cap.isNativePlatform());
+const CONTACT = window.AR_CONTACT || 'design.omani1@gmail.com';
+
+const GOV = {"مسقط": ["مسقط", "مطرح", "بوشر", "السيب", "العامرات", "قريات"], "ظفار": ["صلالة", "طاقة", "مرباط", "رخيوت", "ثمريت", "ضلكوت", "المزيونة", "مقشن", "شليم وجزر الحلانيات", "سدح"], "مسندم": ["خصب", "دبا", "بخا", "مدحاء"], "البريمي": ["البريمي", "محضة", "السنينة"], "الداخلية": ["نزوى", "بهلاء", "منح", "الحمراء", "أدم", "إزكي", "سمائل", "بدبد", "الجبل الأخضر"], "شمال الباطنة": ["صحار", "شناص", "لوى", "صحم", "الخابورة", "السويق"], "جنوب الباطنة": ["الرستاق", "العوابي", "نخل", "وادي المعاول", "بركاء", "المصنعة"], "جنوب الشرقية": ["صور", "الكامل والوافي", "جعلان بني بو حسن", "جعلان بني بو علي", "مصيرة"], "شمال الشرقية": ["إبراء", "المضيبي", "بدية", "القابل", "وادي بني خالد", "دماء والطائيين"], "الظاهرة": ["عبري", "ينقل", "ضنك"], "الوسطى": ["هيماء", "محوت", "الدقم", "الجازر"]};
+const CATS = [ ['all','🧺','الكل'], ['furn','🛋️','أثاث'], ['home','🧊','أجهزة منزلية'], ['elec','📱','إلكترونيات'], ['cars','🚗','سيارات'], ['old','🏺','المندوس'], ['misc','📦','متفرقات'] ];
+const catName = id => (CATS.find(c => c[0] === id) || [, , ''])[2];
+const COND = [ ['new','جديد'], ['excellent','ممتاز'], ['good','جيد'], ['used','مستعمل'], ['antique','قديم / تحفة'] ];
+const condName = id => (COND.find(c => c[0] === id) || [, ''])[1];
+
+/* ---------------- Supabase ---------------- */
+const SB = window.AR_SB || {};
+async function rpc(fn, args){
+  let r;
+  try{ r = await fetch(SB.url + '/rest/v1/rpc/' + fn, { method:'POST', headers:{ apikey:SB.key, 'Content-Type':'application/json' }, body:JSON.stringify(args || {}) }); }
+  catch(e){ throw new Error('ما فيه اتصال بالإنترنت، حاول مرة ثانية'); }
+  const t = await r.text(); let j = null; try{ j = t ? JSON.parse(t) : null; }catch(e){}
+  if(!r.ok) throw new Error((j && j.message) || 'صار خطأ، حاول مرة ثانية');
+  return j;
+}
+const photoUrl = p => /^(data:|https?:)/.test(p) ? p : SB.url + '/storage/v1/object/public/arsa/' + p;
+const rid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10));
+async function upload(blob){
+  const path = 'ads/' + rid() + '.jpg', url = SB.url + '/storage/v1/object/arsa/' + path;
+  const go = h => fetch(url, { method:'POST', headers:Object.assign({ apikey:SB.key, 'Content-Type':'image/jpeg', 'x-upsert':'false' }, h), body:blob });
+  let r = await go({});
+  if(!r.ok && (r.status === 400 || r.status === 401 || r.status === 403)) r = await go({ Authorization:'Bearer ' + SB.key });
+  if(!r.ok) throw new Error('ما قدرت أرفع الصورة (' + r.status + ')');
+  return path;
+}
+
+/* ---------------- state ---------------- */
+let FAV = LS.get('arsa-fav2', []);        // ad snapshots
+let HIDDEN = new Set(LS.get('arsa-hidden', []));
+let ME = LS.get('arsa-me', null);           // { phone, code }
+const S = Object.assign({ cat:'all', gov:'', area:'', sort:'new' }, LS.get('arsa-s', {}), { q:'' });
+const saveS = () => LS.set('arsa-s', { cat:S.cat, gov:S.gov, area:S.area, sort:S.sort });
+let ADS = [], LOADING = false, MORE = false, ERR = '', reqN = 0;
+const PAGE = 40;
+async function load(reset = true){
+  const n = ++reqN; LOADING = true; if(reset){ ADS = []; drawGrid(); }
+  try{
+    const rows = await rpc('ar_list', { p_cat:S.cat, p_gov:S.gov, p_area:S.area, p_q:S.q.trim(), p_sort:S.sort, p_limit:PAGE, p_offset:reset ? 0 : ADS.length });
+    if(n !== reqN) return;
+    ADS = reset ? rows : ADS.concat(rows); MORE = rows.length === PAGE; ERR = '';
+  }catch(e){ if(n === reqN) ERR = e.message; }
+  if(n === reqN){ LOADING = false; drawGrid(); }
+}
+let qT; const reload = () => { clearTimeout(qT); qT = setTimeout(() => load(true), 300); };
+
+/* ---------- filters ---------- */
+function drawCats(){ $('cats').replaceChildren(...CATS.map(([id, ic, n]) => el('button', { class:'cat', type:'button', 'aria-pressed':String(S.cat === id), onclick:() => { S.cat = id; saveS(); drawCats(); load(true); } }, el('b', { text:ic }), n))); $('mandoosBanner').hidden = S.cat === 'old'; }
+function drawGov(){
+  $('gov').replaceChildren(el('option', { value:'', text:'كل عُمان' }), ...Object.keys(GOV).map(g => el('option', { value:g, text:g, selected:g === S.gov })));
+  $('area').hidden = !S.gov;
+  if(S.gov) $('area').replaceChildren(el('option', { value:'', text:'كل ولايات ' + S.gov }), ...GOV[S.gov].map(a => el('option', { value:a, text:a, selected:a === S.area })));
+}
+$('gov').onchange = () => { S.gov = $('gov').value; S.area = ''; saveS(); drawGov(); load(true); };
+$('area').onchange = () => { S.area = $('area').value; saveS(); load(true); };
+$('sort').value = S.sort; $('sort').onchange = () => { S.sort = $('sort').value; saveS(); load(true); };
+$('q').oninput = () => { S.q = $('q').value; reload(); };
+$('goMandoos').onclick = () => { S.cat = 'old'; saveS(); drawCats(); load(true); $('cats').scrollIntoView({ behavior:'smooth', block:'start' }); };
+$('moreBtn').onclick = () => load(false);
+
+/* ---------- grid ---------- */
+function drawGrid(){
+  const L = ADS.filter(a => !HIDDEN.has(a.id));
+  $('resTitle').textContent = (S.cat === 'all' ? 'كل الإعلانات' : catName(S.cat)) + (S.area ? ' في ' + S.area : S.gov ? ' في ' + S.gov : '');
+  $('resN').textContent = L.length ? L.length + (MORE ? '+' : '') + ' إعلان' : '';
+  const g = $('grid'); g.replaceChildren();
+  if(LOADING && !ADS.length) g.append(el('div', { class:'empty', text:'جاري التحميل…' }));
+  else if(ERR) g.append(el('div', { class:'empty' }, ERR + ' ', el('button', { class:'linkb', type:'button', text:'حاول مرة ثانية', onclick:() => load(true) })));
+  else if(!L.length) g.append(el('div', { class:'empty', text:S.q.trim() ? 'ما لقيت شي بـ«' + S.q.trim() + '». جرّب كلمة ثانية أو وسّع المنطقة.' : 'ما فيه إعلانات هنا للحين. كن أول واحد، اضغط «＋ أعلن مجانًا» 🙌' }));
+  L.forEach(a => g.append(card(a)));
+  $('moreBtn').hidden = !MORE || LOADING;
+  drawCounts();
+}
+const isFav = id => FAV.some(f => f.id === id);
+function card(a){
+  const fv = isFav(a.id), sold = a.status === 'sold';
+  return el('article', { class:'card' },
+    el('button', { type:'button', style:'all:unset;cursor:pointer;display:flex;flex-direction:column', 'aria-label':a.title, onclick:() => openAd(a) },
+      el('img', { class:'img', src:photoUrl(a.photos[0]), alt:'', loading:'lazy', style:sold ? 'filter:grayscale(1);opacity:.7' : null }),
+      el('div', { class:'body' }, el('div', { class:'price num', text:fmtPrice(a.price) }), el('div', { class:'t', text:a.title }), el('div', { class:'m', text:'📍 ' + a.area + ' · ' + ago(a.created_at) }))),
+    el('button', { class:'heart' + (fv ? ' on' : ''), type:'button', 'aria-label':fv ? 'شيل من المفضلة' : 'أضف للمفضلة', 'aria-pressed':String(fv), text:fv ? '♥' : '♡', onclick:() => toggleFav(a) }),
+    sold ? el('span', { class:'tag' }, el('span', { class:'pill cop', text:'انباع' })) : null);
+}
+function toggleFav(a){
+  if(isFav(a.id)){ FAV = FAV.filter(f => f.id !== a.id); toast('انشال من المفضلة'); }
+  else { FAV.unshift({ id:a.id, title:a.title, price:a.price, area:a.area, gov:a.gov, cat:a.cat, cond:a.cond, descr:a.descr, photos:a.photos.slice(0, 1), seller:a.seller, phone:a.phone, created_at:a.created_at, status:a.status }); toast('انحفظ في مفضلتي ♥'); }
+  LS.set('arsa-fav2', FAV.slice(0, 100)); drawGrid();
+}
+function drawCounts(){ $('favN').textContent = FAV.length || ''; }
+
+/* ---------- sheets ---------- */
+function sheet(build){ const s = el('div', { class:'scrim' }), b = el('div', { class:'sheet', role:'dialog', 'aria-modal':'true', dir:'rtl' }); const close = () => s.remove(); s.onclick = e => { if(e.target === s) close(); }; const add = b.append.bind(b); b.append = (...k) => add(...k.flat().filter(c => c != null)); build(b, close); s.append(b); $('root').replaceChildren(s); return close; }
+function sure(e, msg, fn){ const b = e.currentTarget; if(!b.dataset.sure){ b.dataset.sure = 1; b.dataset.old = b.textContent; b.textContent = msg; setTimeout(() => { if(b.isConnected){ delete b.dataset.sure; b.textContent = b.dataset.old; } }, 3000); return; } fn(); }
+function msgFor(a){ return 'السلام عليكم، شفت إعلانك في العرصة: «' + a.title + '» بـ ' + fmtPrice(a.price) + '. هل الغرض للحين متوفر؟'; }
+function openAd(a){
+  sheet((b, close) => {
+    const p = normPhone(a.phone), fv = isFav(a.id), mine = ME && normPhone(ME.phone) === p;
+    b.append(el('div', { class:'gal' }, a.photos.map(src => el('img', { src:photoUrl(src), alt:a.title }))),
+      a.photos.length > 1 ? el('p', { class:'hint', text:'اسحب للصور الثانية (' + a.photos.length + ' صور)' }) : null,
+      el('div', { class:'bigprice num', text:fmtPrice(a.price) }), el('h3', { text:a.title }),
+      el('div', { class:'facts' }, a.status === 'sold' ? el('span', { class:'pill cop', text:'انباع' }) : null, el('span', { class:'pill cop', text:catName(a.cat) }), el('span', { class:'pill palm', text:condName(a.cond) }), el('span', { class:'pill', text:'📍 ' + a.area + '، ' + a.gov }), el('span', { class:'pill', text:'🕒 ' + ago(a.created_at) })),
+      a.descr ? el('p', { class:'desc', text:a.descr }) : null,
+      el('div', { class:'seller' }, el('div', { class:'av', text:(a.seller || '؟').replace(/^(أبو|ابو|ام|أم)\s+/, '')[0] }), el('div', {}, el('div', { text:a.seller || 'البائع' }), el('div', { class:'hint', dir:'ltr', style:'text-align:right', text:'+' + p }))),
+      a.status === 'sold' ? el('p', { class:'hint', text:'هذا الغرض انباع.' }) : el('div', { class:'acts' },
+        el('a', { class:'btn', href:'tel:+' + p, text:'📞 اتصال' }),
+        el('a', { class:'btn ghost', href:'sms:+' + p + '&body=' + encodeURIComponent(msgFor(a)), text:'✉️ رسالة' }),
+        el('a', { class:'btn wa', href:'https://wa.me/' + p + '?text=' + encodeURIComponent(msgFor(a)), target:'_blank', rel:'noopener', text:'💬 واتساب' })),
+      el('p', { class:'hint', text:'نصيحة: عاين الغرض بنفسك قبل ما تدفع، ولا تحوّل فلوس مقدّم لأحد ما تعرفه.' }),
+      el('div', { class:'links' },
+        el('button', { class:'linkb', type:'button', text:fv ? '♥ في مفضلتي' : '♡ أضف لمفضلتي', onclick:() => { toggleFav(a); openAd(a); } }),
+        mine ? null : el('button', { class:'linkb', type:'button', text:'🚩 إبلاغ', onclick:() => report(a) }),
+        mine ? null : el('button', { class:'linkb', type:'button', text:'🚫 إخفاء', onclick:() => { HIDDEN.add(a.id); LS.set('arsa-hidden', [...HIDDEN]); close(); drawGrid(); toast('انخفى الإعلان'); } }),
+        mine ? el('button', { class:'linkb', type:'button', text:'📋 إدارة إعلاني', onclick:mySheet }) : null),
+      el('button', { class:'btn ghost', type:'button', text:'إغلاق', onclick:close }));
+  });
+}
+function report(a){
+  sheet((b, close) => {
+    let why = '';
+    const opts = ['نصب أو احتيال', 'الصور مو حقيقية', 'الغرض انباع', 'محتوى غير لائق', 'غرض ممنوع', 'غير ذلك'];
+    const ch = el('div', { class:'chips' });
+    const draw = () => ch.replaceChildren(...opts.map(o => el('button', { class:'chip', type:'button', 'aria-pressed':String(why === o), text:o, onclick:() => { why = o; draw(); } })));
+    draw();
+    b.append(el('h3', { text:'🚩 إبلاغ عن «' + a.title + '»' }), ch, el('p', { class:'hint', text:'البلاغ يوصل لإدارة العرصة ونراجعه خلال 24 ساعة، والإعلان بيختفي عندك على طول.' }),
+      el('div', { class:'end' }, el('button', { class:'btn ghost', type:'button', text:'رجوع', onclick:() => openAd(a) }), el('button', { class:'btn', type:'button', text:'أرسل البلاغ', onclick:async () => {
+        if(!why) return toast('اختار السبب');
+        try{ await rpc('ar_report', { p_id:a.id, p_reason:why }); }catch(e){ return toast(e.message); }
+        HIDDEN.add(a.id); LS.set('arsa-hidden', [...HIDDEN]); close(); drawGrid(); toast('وصل البلاغ، شكرًا لك 🙏'); } })));
+  });
+}
+function favSheet(){
+  sheet((b, close) => {
+    b.append(el('h3', { text:'♥ مفضلتي' }));
+    if(!FAV.length) b.append(el('p', { class:'hint', text:'اضغط ♡ على أي إعلان عشان ينحفظ هنا.' }));
+    const g = el('div', { class:'grid' }); FAV.forEach(a => g.append(card(a))); b.append(g);
+    b.append(el('div', { class:'end' }, el('button', { class:'btn', type:'button', text:'إغلاق', onclick:close })));
+  });
+}
+$('favBtn').onclick = favSheet;
+
+/* ---------- seller account ---------- */
+const fld = (l, i) => el('div', { class:'field' }, el('label', { for:i.id, text:l }), i);
+function accountSheet(then){
+  sheet((b, close) => {
+    const name = el('input', { class:'inp', id:'aName', placeholder:'مثال: أبو محمد', maxlength:40 }), phone = el('input', { class:'inp', id:'aPhone', placeholder:'9XXXXXXX', inputmode:'tel', dir:'ltr', maxlength:15 });
+    const go = el('button', { class:'btn', type:'button', text:'سجّل وكمّل' });
+    b.append(el('h3', { text:'🧺 حساب البائع' }), el('p', { class:'hint', text:'مرة وحدة بس. المشترين يتصلون فيك أو يراسلونك على هالرقم مباشرة. ما تحتاج واتساب ولا أي تطبيق ثاني.' }),
+      fld('اسمك (يطلع للمشترين)', name), fld('رقم الجوال', phone), go,
+      el('button', { class:'btn ghost', type:'button', text:'عندي حساب، أدخل برمزي', onclick:() => loginSheet(then) }),
+      el('p', { class:'hint', text:'بالتسجيل توافق على شروط العرصة: إعلانات حقيقية بس، بدون أغراض ممنوعة أو مسروقة، والمخالف ينحذف حسابه.' }),
+      el('a', { href:'privacy.html', class:'linkb', target:'_blank', text:'الخصوصية والشروط' }));
+    go.onclick = async () => {
+      const ph = normPhone(phone.value);
+      if(name.value.trim().length < 2) return toast('اكتب اسمك');
+      if(!/^968[79]\d{7}$/.test(ph)) return toast('رقم الجوال لازم 8 أرقام ويبدأ بـ 9 أو 7');
+      go.disabled = true;
+      try{ const r = await rpc('ar_register', { p_name:name.value.trim(), p_phone:ph }); ME = { phone:ph, code:r.code }; LS.set('arsa-me', ME); codeSheet(r.code, then); }
+      catch(e){ toast(e.message); go.disabled = false; }
+    };
+  });
+}
+function codeSheet(code, then){
+  sheet(b => {
+    b.append(el('h3', { text:'🎉 تم! هذا رمز الدخول حقك' }), el('p', { style:'margin:0', text:'احفظه (صوّر الشاشة أو انسخه). تحتاجه عشان تدير إعلاناتك لو غيّرت جوالك أو حذفت التطبيق:' }),
+      el('div', { style:'font:800 1.8rem/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-align:center;background:var(--sunk);border:1px dashed var(--line);border-radius:14px;padding:16px;direction:ltr;user-select:all', text:code }),
+      el('div', { class:'end' }, el('button', { class:'btn ghost', type:'button', text:'📋 نسخ', onclick:() => navigator.clipboard?.writeText(code).then(() => toast('انسخ ✅'), () => toast('حدده وانسخه')) }),
+        el('button', { class:'btn', type:'button', text:'حفظته، كمّل', onclick:() => then ? then() : mySheet() })));
+  });
+}
+function loginSheet(then){
+  sheet(b => {
+    const ph = el('input', { class:'inp', id:'lPhone', placeholder:'9XXXXXXX', inputmode:'tel', dir:'ltr' }), cd = el('input', { class:'inp', id:'lCode', placeholder:'مثال: 8E7B9F24', dir:'ltr', autocapitalize:'characters', autocomplete:'off' });
+    const go = el('button', { class:'btn', type:'button', text:'دخول' });
+    b.append(el('h3', { text:'🔑 دخول البائع' }), fld('رقم الجوال', ph), fld('رمز الدخول', cd), el('p', { class:'hint', text:'نسيت الرمز؟ راسل الإدارة: ' + CONTACT }),
+      el('div', { class:'end' }, el('button', { class:'btn ghost', type:'button', text:'رجوع', onclick:() => accountSheet(then) }), go));
+    go.onclick = async () => {
+      const phone = normPhone(ph.value), code = cd.value.trim().toUpperCase();
+      if(!/^968\d{8}$/.test(phone) || code.length < 6) return toast('اكتب الرقم والرمز صح');
+      go.disabled = true;
+      try{ await rpc('ar_me', { p_phone:phone, p_code:code }); ME = { phone, code }; LS.set('arsa-me', ME); toast('هلا فيك 👋'); then ? then() : mySheet(); }
+      catch(e){ toast(e.message); go.disabled = false; }
+    };
+  });
+}
+async function mySheet(){
+  if(!ME) return accountSheet(null);
+  let me;
+  try{ me = await rpc('ar_me', { p_phone:ME.phone, p_code:ME.code }); }
+  catch(e){ toast(e.message); if(/غلط|موقوف/.test(e.message)){ ME = null; LS.set('arsa-me', null); } return; }
+  sheet((b, close) => {
+    const st = { active:['شغّال','palm'], sold:['انباع','cop'], hidden:['مخفي (بلاغات)',''], blocked:['موقوف','']};
+    b.append(el('h3', { text:'📋 إعلاناتي' }), el('p', { class:'hint', text:'باسم ' + me.name + ' · +' + me.phone }));
+    if(!me.ads.length) b.append(el('p', { class:'hint', text:'ما نزّلت إعلانات للحين.' }));
+    me.ads.forEach(a => {
+      const [lbl, cls] = st[a.status] || [a.status, ''];
+      const row = el('div', { style:'display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px;align-items:start;border-top:1px solid var(--line);padding-top:10px' },
+        el('img', { src:photoUrl(a.photos[0]), alt:'', style:'width:64px;height:64px;object-fit:cover;border-radius:10px' }),
+        el('div', { style:'min-width:0' }, el('div', { style:'font-weight:700', text:a.title }), el('div', { class:'hint', text:fmtPrice(a.price) + ' · ' + a.area + ' · ' + ago(a.created_at) + ' ' }, el('span', { class:'pill ' + cls, text:lbl })),
+          el('div', { class:'chips', style:'margin-top:6px' },
+            a.status === 'active' ? el('button', { class:'chip', type:'button', text:'✅ انباع', onclick:() => setSt(a, 'sold') }) : null,
+            a.status === 'sold' ? el('button', { class:'chip', type:'button', text:'↩️ رجّعه شغّال', onclick:() => setSt(a, 'active') }) : null,
+            a.status !== 'blocked' ? el('button', { class:'chip', type:'button', text:'✏️ تعديل', onclick:() => sell(a) }) : null,
+            el('button', { class:'chip', type:'button', style:'color:var(--bad)', text:'🗑️ حذف', onclick:e => sure(e, 'متأكد؟', () => setSt(a, 'deleted')) }))));
+      b.append(row);
+    });
+    b.append(el('button', { class:'btn', type:'button', text:'＋ إعلان جديد', onclick:() => sell(null) }),
+      el('div', { class:'links' },
+        el('button', { class:'linkb', type:'button', text:'تسجيل خروج', onclick:e => sure(e, 'بتحتاج رمزك ترجع، متأكد؟', () => { ME = null; LS.set('arsa-me', null); close(); toast('طلعت من حسابك'); }) }),
+        el('button', { class:'linkb', type:'button', style:'color:var(--bad)', text:'🗑️ حذف حسابي وكل إعلاناتي', onclick:e => sure(e, 'اضغط مرة ثانية للتأكيد', async () => { try{ await rpc('ar_delete_account', { p_phone:ME.phone, p_code:ME.code }); ME = null; LS.set('arsa-me', null); close(); load(true); toast('انحذف حسابك ✅'); }catch(er){ toast(er.message); } }) })),
+      el('button', { class:'btn ghost', type:'button', text:'إغلاق', onclick:close }));
+  });
+}
+async function setSt(a, s){
+  try{ await rpc('ar_set_status', { p_phone:ME.phone, p_code:ME.code, p_id:a.id, p_status:s }); toast(s === 'deleted' ? 'انحذف الإعلان' : s === 'sold' ? 'مبروك البيع 🎉' : 'رجع شغّال ✅'); load(true); mySheet(); }
+  catch(e){ toast(e.message); }
+}
+$('mineBtn').onclick = mySheet;
+
+/* ---------- sell ---------- */
+function shrink(file){
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => { const m = 1100, s = Math.min(1, m / Math.max(img.width, img.height)); const c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url); c.toBlob(b => b ? res(b) : rej(new Error('bad')), 'image/jpeg', .75); };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('bad image')); };
+    img.src = url;
+  });
+}
+function sell(edit){
+  if(!ME) return accountSheet(() => sell(edit));
+  sheet((b, close) => {
+    const d = edit || LS.get('arsa-draft', {});
+    let cat = d.cat || (S.cat !== 'all' ? S.cat : 'furn'), cond = d.cond || 'good';
+    // photos: {path} already uploaded, or {blob, url} new
+    let photos = edit ? edit.photos.map(p => ({ path:p, url:photoUrl(p) })) : [];
+    const I = (id, ph, extra = {}) => el('input', { class:'inp', id, placeholder:ph, ...extra });
+    const title = I('sTitle', 'مثال: كنبة 3 مقاعد نظيفة', { maxlength:70, value:d.title || '' });
+    const price = I('sPrice', 'بالريال العماني (0 = مجانًا)', { inputmode:'decimal', dir:'ltr', value:d.price != null ? +d.price || '' : '' });
+    const desc = el('textarea', { class:'inp', id:'sDesc', placeholder:'الحالة، المقاس، سبب البيع، العيوب إن وجدت…', maxlength:1000 }); desc.value = d.descr || '';
+    const gov = el('select', { class:'inp', id:'sGov' }, Object.keys(GOV).map(g => el('option', { value:g, text:g, selected:g === (d.gov || S.gov || 'مسقط') })));
+    const area = el('select', { class:'inp', id:'sArea' });
+    const fillArea = () => area.replaceChildren(...GOV[gov.value].map(a => el('option', { value:a, text:a, selected:a === (d.area || S.area) })));
+    gov.onchange = fillArea; fillArea();
+    const catBox = el('div', { class:'chips' }), condBox = el('div', { class:'chips' });
+    const drawC = () => { catBox.replaceChildren(...CATS.slice(1).map(([id, ic, n]) => el('button', { class:'chip', type:'button', 'aria-pressed':String(cat === id), text:ic + ' ' + n, onclick:() => { cat = id; if(id === 'old') cond = 'antique'; drawC(); } }))); condBox.replaceChildren(...COND.map(([id, n]) => el('button', { class:'chip', type:'button', 'aria-pressed':String(cond === id), text:n, onclick:() => { cond = id; drawC(); } }))); };
+    drawC();
+    const thumbs = el('div', { class:'thumbs' }), file = el('input', { type:'file', accept:'image/*', multiple:true, id:'sFile', hidden:true });
+    const drawTh = () => { thumbs.replaceChildren(...photos.map((p, i) => el('div', { class:'th' }, el('img', { src:p.url, alt:'صورة ' + (i + 1) }), el('button', { class:'x', type:'button', 'aria-label':'شيل الصورة', text:'✕', onclick:() => { photos.splice(i, 1); drawTh(); } }))), photos.length < 6 ? el('label', { class:'addph', for:'sFile', 'aria-label':'أضف صور', text:'📷' }) : null); };
+    file.onchange = async () => { for(const f of [...file.files].slice(0, 6 - photos.length)){ try{ const blob = await shrink(f); photos.push({ blob, url:URL.createObjectURL(blob) }); }catch(e){ toast('صورة ما انقرت'); } } file.value = ''; drawTh(); };
+    drawTh();
+    const keepDraft = () => { if(!edit) LS.set('arsa-draft', { title:title.value, price:price.value, descr:desc.value, cat, cond, gov:gov.value, area:area.value }); };
+    [title, price, desc].forEach(x => x.addEventListener('input', keepDraft));
+    const go = el('button', { class:'btn', type:'button', text:edit ? 'احفظ التعديل' : 'انشر الإعلان' });
+    b.append(el('h3', { text:edit ? '✏️ تعديل الإعلان' : '＋ أعلن في العرصة' }),
+      el('div', { class:'field' }, el('label', { text:'الصور (لين 6)' }), thumbs, file, el('p', { class:'hint', text:'الصورة الأولى هي اللي تطلع في القائمة. صوّر الغرض الحقيقي في مكان فيه نور.' })),
+      fld('العنوان', title),
+      el('div', { class:'field' }, el('label', { text:'القسم' }), catBox),
+      el('div', { class:'row2' }, fld('السعر (ر.ع)', price), el('div', { class:'field' }, el('label', { text:'الحالة' }), condBox)),
+      el('div', { class:'row2' }, fld('المحافظة', gov), fld('الولاية', area)),
+      fld('الوصف', desc),
+      el('p', { class:'hint', text:'ممنوع: الأغراض المسروقة أو الممنوعة قانونيًا، والأسلحة، والأدوية، والحيوانات المهددة، والصور مو الحقيقية.' }),
+      el('div', { class:'end' }, el('button', { class:'btn ghost', type:'button', text:'إلغاء', onclick:close }), go));
+    go.onclick = async () => {
+      const pr = price.value.trim() === '' ? 0 : parseFloat(digits(price.value));
+      if(!photos.length) return toast('أضف صورة وحدة على الأقل');
+      if(title.value.trim().length < 3) return toast('اكتب عنوان واضح');
+      if(!(pr >= 0)) return toast('اكتب السعر بالأرقام');
+      go.disabled = true; go.textContent = 'أرفع الصور…';
+      try{
+        const paths = [];
+        for(const [i, p] of photos.entries()){ go.textContent = 'أرفع الصور… ' + (i + 1) + '/' + photos.length; paths.push(p.path || (p.path = await upload(p.blob))); }
+        go.textContent = 'أنشر…';
+        await rpc('ar_post', { p_phone:ME.phone, p_code:ME.code, p_id:edit ? edit.id : null, p_title:title.value.trim(), p_cat:cat, p_price:pr, p_cond:cond, p_gov:gov.value, p_area:area.value, p_descr:desc.value.trim(), p_photos:paths });
+        if(!edit) LS.set('arsa-draft', {});
+        close(); toast(edit ? 'انحفظ التعديل ✅' : 'انتشر إعلانك ✅'); S.cat = 'all'; S.gov = ''; S.area = ''; S.q = ''; $('q').value = ''; saveS(); drawCats(); drawGov(); load(true);
+      }catch(e){ toast(e.message); go.disabled = false; go.textContent = edit ? 'احفظ التعديل' : 'انشر الإعلان'; }
+    };
+  });
+}
+$('sellBtn').onclick = () => sell(null);
+
+drawCats(); drawGov(); drawCounts(); load(true);
+</script>
+</body>
+</html>
