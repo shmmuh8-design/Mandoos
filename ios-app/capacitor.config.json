@@ -1,0 +1,10 @@
+{
+  "appId": "com.salemaljabri.mandoos",
+  "appName": "المندوس",
+  "webDir": "www",
+  "backgroundColor": "#f2f1ee",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#f2f1ee"
+  }
+}

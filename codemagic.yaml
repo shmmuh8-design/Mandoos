@@ -1,0 +1,60 @@
+# بناء تطبيق المندوس للآيفون على أجهزة ماك في Codemagic ورفعه إلى TestFlight
+workflows:
+  mandoos-ios:
+    name: المندوس — آيفون
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    working_directory: ios-app
+    integrations:
+      app_store_connect: manakh_asc        # نفس مفتاح App Store Connect حق مناخ وسُقيا وخدماتي
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.salemaljabri.mandoos
+      node: 20
+      xcode: latest
+    scripts:
+      - name: تثبيت الحزم وتجهيز الملفات
+        script: |
+          npm install
+          npm run build
+      - name: إنشاء مشروع iOS
+        script: |
+          [ -d ios ] || npx cap add ios
+          sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g' ios/App/App.xcodeproj/project.pbxproj
+          sed -i '' 's/TARGETED_DEVICE_FAMILY = "[0-9,]*";/TARGETED_DEVICE_FAMILY = 1;/g' ios/App/App.xcodeproj/project.pbxproj
+          [ -f ios/App/Podfile ] && sed -i '' "s/platform :ios, .*/platform :ios, '15.0'/" ios/App/Podfile
+          npm run assets
+          npx cap sync ios
+      - name: إعدادات التطبيق (الاسم، اللغة)
+        script: |
+          PLIST=ios/App/App/Info.plist
+          /usr/libexec/PlistBuddy -c "Delete :CFBundleDisplayName" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string المندوس" $PLIST
+          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string المندوس يحتاج الصور عشان ترفع صور القطعة اللي تبي تبيعها" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string المندوس يحتاج الكاميرا عشان تصوّر القطعة اللي تبي تبيعها" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDevelopmentRegion ar" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations array" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations:0 string ar" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :LSApplicationQueriesSchemes array" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :LSApplicationQueriesSchemes:0 string whatsapp" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Delete :UISupportedInterfaceOrientations" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations array" $PLIST
+          /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations:0 string UIInterfaceOrientationPortrait" $PLIST
+          /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" $PLIST || true
+      - name: التوقيع
+        script: xcode-project use-profiles
+      - name: رقم البناء
+        script: |
+          cd ios/App
+          agvtool new-version -all $((BUILD_NUMBER + 1))
+      - name: بناء ملف IPA
+        script: |
+          xcode-project build-ipa --workspace ios/App/App.xcworkspace --scheme App
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - ios-app/build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: false     # تظهر في TestFlight للمختبرين الداخليين بدون مراجعة
