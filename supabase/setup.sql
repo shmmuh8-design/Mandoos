@@ -10,6 +10,9 @@ create table if not exists public.ar_sellers (
   status     text not null default 'ok' check (status in ('ok','blocked')),
   code_hash  text not null
 );
+alter table public.ar_sellers add column if not exists wa text check (wa is null or wa ~ '^[0-9]{10,15}$');
+alter table public.ar_sellers add column if not exists email text check (email is null or (char_length(email) <= 100 and email ~* '^[^@\s]+@[^@\s]+\.[^@\s]+$'));
+
 create table if not exists public.ar_ads (
   id         uuid primary key default gen_random_uuid(),
   seller_id  uuid not null references public.ar_sellers(id) on delete cascade,
@@ -74,10 +77,11 @@ end $$;
 
 -- public: list / one ad / report ----------------------------------------
 drop function if exists public.ar_list(text, text, text, text, text, int, int);
+drop function if exists public.ar_register(text, text);
 create function public.ar_list(p_cat text, p_gov text, p_area text, p_q text, p_sort text, p_limit int, p_offset int)
-returns table(id uuid, created_at timestamptz, title text, cat text, price numeric, cond text, gov text, area text, descr text, photos text[], status text, seller text, phone text)
+returns table(id uuid, created_at timestamptz, title text, cat text, price numeric, cond text, gov text, area text, descr text, photos text[], status text, seller text, phone text, wa text, email text)
 language sql stable security definer set search_path = public as $$
-  select a.id, a.created_at, a.title, a.cat, a.price, a.cond, a.gov, a.area, a.descr, a.photos, a.status, s.name, s.phone
+  select a.id, a.created_at, a.title, a.cat, a.price, a.cond, a.gov, a.area, a.descr, a.photos, a.status, s.name, s.phone, s.wa, s.email
   from ar_ads a join ar_sellers s on s.id = a.seller_id
   where a.status in ('active','sold') and a.expires_at > now() and s.status = 'ok'
     and (coalesce(p_cat,'') in ('','all') or a.cat = p_cat)
@@ -102,7 +106,14 @@ begin
 end $$;
 
 -- seller ------------------------------------------------------------------
-create or replace function public.ar_register(p_name text, p_phone text)
+create or replace function public.ar_contact(p_phone text, p_code text, p_wa text, p_email text)
+returns void language plpgsql security definer set search_path = public, extensions as $$
+declare s ar_sellers := _ar_seller(p_phone, p_code);
+begin
+  update ar_sellers set wa = nullif(trim(coalesce(p_wa,'')), ''), email = nullif(lower(trim(coalesce(p_email,''))), '') where id = s.id;
+end $$;
+
+create or replace function public.ar_register(p_name text, p_phone text, p_wa text default null, p_email text default null)
 returns json language plpgsql security definer set search_path = public, extensions as $$
 declare v_code text;
 begin
@@ -113,7 +124,8 @@ begin
     raise exception 'ضغط تسجيلات كثير، حاول بعد شوي';
   end if;
   v_code := upper(substr(encode(gen_random_bytes(6), 'hex'), 1, 8));
-  insert into ar_sellers(name, phone, code_hash) values (trim(p_name), p_phone, crypt(v_code, gen_salt('bf')));
+  insert into ar_sellers(name, phone, wa, email, code_hash)
+  values (trim(p_name), p_phone, nullif(trim(coalesce(p_wa,'')), ''), nullif(lower(trim(coalesce(p_email,''))), ''), crypt(v_code, gen_salt('bf')));
   return json_build_object('code', v_code);
 end $$;
 
@@ -121,7 +133,7 @@ create or replace function public.ar_me(p_phone text, p_code text)
 returns json language plpgsql security definer set search_path = public as $$
 declare s ar_sellers := _ar_seller(p_phone, p_code);
 begin
-  return json_build_object('name', s.name, 'phone', s.phone, 'ads', coalesce((
+  return json_build_object('name', s.name, 'phone', s.phone, 'wa', s.wa, 'email', s.email, 'ads', coalesce((
     select json_agg(json_build_object('id', a.id, 'created_at', a.created_at, 'expires_at', a.expires_at, 'title', a.title, 'cat', a.cat,
       'price', a.price, 'cond', a.cond, 'gov', a.gov, 'area', a.area, 'descr', a.descr, 'photos', a.photos, 'status', a.status) order by a.created_at desc)
     from ar_ads a where a.seller_id = s.id), '[]'::json));
@@ -154,9 +166,9 @@ end $$;
 
 drop function if exists public.ar_get(uuid);
 create function public.ar_get(p_id uuid)
-returns table(id uuid, created_at timestamptz, title text, cat text, price numeric, cond text, gov text, area text, descr text, photos text[], status text, seller text, phone text)
+returns table(id uuid, created_at timestamptz, title text, cat text, price numeric, cond text, gov text, area text, descr text, photos text[], status text, seller text, phone text, wa text, email text)
 language sql stable security definer set search_path = public as $$
-  select a.id, a.created_at, a.title, a.cat, a.price, a.cond, a.gov, a.area, a.descr, a.photos, a.status, s.name, s.phone
+  select a.id, a.created_at, a.title, a.cat, a.price, a.cond, a.gov, a.area, a.descr, a.photos, a.status, s.name, s.phone, s.wa, s.email
   from ar_ads a join ar_sellers s on s.id = a.seller_id
   where a.id = p_id and a.status in ('active','sold') and a.expires_at > now() and s.status = 'ok'
 $$;
@@ -223,7 +235,7 @@ end $$;
 revoke all on function public._ar_seller(text, text), public._ar_photos(text[]) from public, anon, authenticated;
 grant execute on function
   public.ar_list(text, text, text, text, text, int, int), public.ar_get(uuid), public.ar_report(uuid, text),
-  public.ar_register(text, text), public.ar_me(text, text),
+  public.ar_register(text, text, text, text), public.ar_me(text, text), public.ar_contact(text, text, text, text),
   public.ar_post(text, text, uuid, text, text, numeric, text, text, text, text, text[]),
   public.ar_set_status(text, text, uuid, text), public.ar_delete_account(text, text),
   public.ar_admin_ads(text, text), public.ar_admin_set(text, uuid, text), public.ar_admin_block_seller(text, text), public.ar_admin_reports(text)

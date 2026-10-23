@@ -96,7 +96,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .desc{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
 .seller{display:flex;align-items:center;gap:10px;background:var(--sunk);border-radius:14px;padding:10px 12px}
 .seller .av{width:40px;height:40px;border-radius:50%;background:var(--palm);color:#fff;display:grid;place-items:center;font:800 1rem var(--display)}
-.acts{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .btn{border:0;border-radius:12px;padding:11px 14px;font-weight:700;background:var(--copper);color:var(--copper-ink);display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
 .btn.ghost{background:var(--surface);color:var(--fg);border:1px solid var(--line)}
 .btn.wa{background:var(--wa);color:#fff}
@@ -289,9 +289,10 @@ function openAd(a){
       a.descr ? el('p', { class:'desc', text:a.descr }) : null,
       el('div', { class:'seller' }, el('div', { class:'av', text:(a.seller || '؟').replace(/^(أبو|ابو|ام|أم)\s+/, '')[0] }), el('div', {}, el('div', { text:a.seller || 'البائع' }), el('div', { class:'hint', dir:'ltr', style:'text-align:right', text:'+' + p }))),
       a.status === 'sold' ? el('p', { class:'hint', text:'هذا الغرض انباع.' }) : el('div', { class:'acts' },
-        el('a', { class:'btn', href:'tel:+' + p, text:'📞 اتصال' }),
+        el('a', { class:'btn', href:'tel:+' + p, text:'📞 اتصال', style:a.email ? null : 'grid-column:1/-1' }),
         el('a', { class:'btn ghost', href:'sms:+' + p + '&body=' + encodeURIComponent(msgFor(a)), text:'✉️ رسالة' }),
-        el('a', { class:'btn wa', href:'https://wa.me/' + p + '?text=' + encodeURIComponent(msgFor(a)), target:'_blank', rel:'noopener', text:'💬 واتساب' })),
+        el('a', { class:'btn wa', href:'https://wa.me/' + normPhone(a.wa || a.phone) + '?text=' + encodeURIComponent(msgFor(a)), target:'_blank', rel:'noopener', text:'💬 واتساب' }),
+        a.email ? el('a', { class:'btn ghost', href:'mailto:' + a.email + '?subject=' + encodeURIComponent('المندوس: ' + a.title) + '&body=' + encodeURIComponent(msgFor(a)), text:'📧 إيميل' }) : null),
       a.status === 'sold' ? null : el('button', { class:'btn ghost', type:'button', text:mine ? '📤 شارك إعلانك في قروبات الواتساب' : '📤 أرسله لصديق', onclick:() => shareAd(a) }),
       el('p', { class:'hint', text:'نصيحة: عاين الغرض بنفسك قبل ما تدفع، ولا تحوّل فلوس مقدّم لأحد ما تعرفه.' }),
       el('div', { class:'links' },
@@ -328,12 +329,28 @@ $('favBtn').onclick = favSheet;
 
 /* ---------- seller account ---------- */
 const fld = (l, i) => el('div', { class:'field' }, el('label', { for:i.id, text:l }), i);
+function readContact(wa, mail){
+  let w = wa.value.trim() ? normPhone(wa.value) : null, m = mail.value.trim().toLowerCase() || null;
+  if(w && !/^\d{10,15}$/.test(w)) return toast('رقم الواتساب مو صحيح'), null;
+  if(m && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m)) return toast('الإيميل مو صحيح'), null;
+  return { wa:w, email:m };
+}
+function contactSheet(me){
+  sheet((b, close) => {
+    const wa = el('input', { class:'inp', placeholder:'لو غير رقم الجوال', inputmode:'tel', dir:'ltr', maxlength:15, value:me.wa ? '+' + me.wa : '' }), mail = el('input', { class:'inp', placeholder:'name@example.com', type:'email', dir:'ltr', maxlength:100, value:me.email || '' });
+    b.append(el('h3', { text:'📞 طرق التواصل معك' }), el('p', { class:'hint', text:'رقم الجوال +' + me.phone + ' للاتصال والرسائل. والباقي اختياري، فلو تركته فاضي ما يطلع للمشتري.' }),
+      fld('💬 رقم الواتساب', wa), fld('📧 الإيميل', mail),
+      el('button', { class:'btn', type:'button', text:'حفظ', onclick:async () => { const c = readContact(wa, mail); if(!c) return; try{ await rpc('ar_contact', { p_phone:ME.phone, p_code:ME.code, p_wa:c.wa, p_email:c.email }); close(); toast('انحفظ ✅'); load(true); }catch(e){ toast(e.message); } } }),
+      el('button', { class:'btn ghost', type:'button', text:'رجوع', onclick:mySheet }));
+  });
+}
 function accountSheet(then){
   sheet((b, close) => {
     const name = el('input', { class:'inp', id:'aName', placeholder:'مثال: أبو محمد', maxlength:40 }), phone = el('input', { class:'inp', id:'aPhone', placeholder:'9XXXXXXX', inputmode:'tel', dir:'ltr', maxlength:15 });
+    const wa = el('input', { class:'inp', id:'aWa', placeholder:'لو غير رقم الجوال', inputmode:'tel', dir:'ltr', maxlength:15 }), mail = el('input', { class:'inp', id:'aMail', placeholder:'name@example.com', type:'email', inputmode:'email', dir:'ltr', maxlength:100 });
     const go = el('button', { class:'btn', type:'button', text:'سجّل وكمّل' });
-    b.append(el('h3', { text:'🧺 حساب البائع' }), el('p', { class:'hint', text:'مرة وحدة بس. المشترين يتصلون فيك أو يراسلونك على هالرقم مباشرة. ما تحتاج واتساب ولا أي تطبيق ثاني.' }),
-      fld('اسمك (يطلع للمشترين)', name), fld('رقم الجوال', phone), go,
+    b.append(el('h3', { text:'🧺 حساب البائع' }), el('p', { class:'hint', text:'مرة وحدة بس. المشترين يتواصلون معك مباشرة بالطرق اللي تختارها هنا.' }),
+      fld('اسمك (يطلع للمشترين)', name), fld('📞 رقم الجوال (للاتصال والرسائل)', phone), fld('💬 رقم الواتساب (اختياري)', wa), fld('📧 الإيميل (اختياري)', mail), go,
       el('button', { class:'btn ghost', type:'button', text:'عندي حساب، أدخل برمزي', onclick:() => loginSheet(then) }),
       el('p', { class:'hint', text:'بالتسجيل توافق على شروط المندوس: إعلانات حقيقية بس، بدون قطع أثرية أو مسروقة أو مقلّدة تنباع على إنها أصلية، والمخالف ينحذف حسابه.' }),
       el('a', { href:'privacy.html', class:'linkb', target:'_blank', text:'الخصوصية والشروط' }));
@@ -341,8 +358,9 @@ function accountSheet(then){
       const ph = normPhone(phone.value);
       if(name.value.trim().length < 2) return toast('اكتب اسمك');
       if(!/^968[79]\d{7}$/.test(ph)) return toast('رقم الجوال لازم 8 أرقام ويبدأ بـ 9 أو 7');
+      const c = readContact(wa, mail); if(!c) return;
       go.disabled = true;
-      try{ const r = await rpc('ar_register', { p_name:name.value.trim(), p_phone:ph }); ME = { phone:ph, code:r.code }; LS.set('arsa-me', ME); codeSheet(r.code, then); }
+      try{ const r = await rpc('ar_register', { p_name:name.value.trim(), p_phone:ph, p_wa:c.wa, p_email:c.email }); ME = { phone:ph, code:r.code }; LS.set('arsa-me', ME); codeSheet(r.code, then); }
       catch(e){ toast(e.message); go.disabled = false; }
     };
   });
@@ -392,6 +410,7 @@ async function mySheet(){
       b.append(row);
     });
     b.append(el('button', { class:'btn', type:'button', text:'＋ إعلان جديد', onclick:() => sell(null) }),
+      el('button', { class:'btn ghost', type:'button', text:'📞 طرق التواصل معي', onclick:() => contactSheet(me) }),
       el('div', { class:'links' },
         el('button', { class:'linkb', type:'button', text:'تسجيل خروج', onclick:e => sure(e, 'بتحتاج رمزك ترجع، متأكد؟', () => { ME = null; LS.set('arsa-me', null); close(); toast('طلعت من حسابك'); }) }),
         el('button', { class:'linkb', type:'button', style:'color:var(--bad)', text:'🗑️ حذف حسابي وكل إعلاناتي', onclick:e => sure(e, 'اضغط مرة ثانية للتأكيد', async () => { try{ await rpc('ar_delete_account', { p_phone:ME.phone, p_code:ME.code }); ME = null; LS.set('arsa-me', null); close(); load(true); toast('انحذف حسابك ✅'); }catch(er){ toast(er.message); } }) })),
