@@ -152,6 +152,15 @@ begin
   return json_build_object('id', v_id);
 end $$;
 
+drop function if exists public.ar_get(uuid);
+create function public.ar_get(p_id uuid)
+returns table(id uuid, created_at timestamptz, title text, cat text, price numeric, cond text, gov text, area text, descr text, photos text[], status text, seller text, phone text)
+language sql stable security definer set search_path = public as $$
+  select a.id, a.created_at, a.title, a.cat, a.price, a.cond, a.gov, a.area, a.descr, a.photos, a.status, s.name, s.phone
+  from ar_ads a join ar_sellers s on s.id = a.seller_id
+  where a.id = p_id and a.status in ('active','sold') and a.expires_at > now() and s.status = 'ok'
+$$;
+
 create or replace function public.ar_set_status(p_phone text, p_code text, p_id uuid, p_status text)
 returns void language plpgsql security definer set search_path = public as $$
 declare s ar_sellers := _ar_seller(p_phone, p_code);
@@ -213,7 +222,7 @@ end $$;
 -- who may call what ---------------------------------------------------------
 revoke all on function public._ar_seller(text, text), public._ar_photos(text[]) from public, anon, authenticated;
 grant execute on function
-  public.ar_list(text, text, text, text, text, int, int), public.ar_report(uuid, text),
+  public.ar_list(text, text, text, text, text, int, int), public.ar_get(uuid), public.ar_report(uuid, text),
   public.ar_register(text, text), public.ar_me(text, text),
   public.ar_post(text, text, uuid, text, text, numeric, text, text, text, text, text[]),
   public.ar_set_status(text, text, uuid, text), public.ar_delete_account(text, text),

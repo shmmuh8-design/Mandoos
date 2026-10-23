@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>المندوس</title>
+<meta name="description" content="المندوس: سوق التراث والقطع القديمة في عُمان. خناجر، فضيات، أحجار كريمة، عملات، نحاسيات.">
+<meta property="og:title" content="المندوس 🗝️ سوق التراث في عُمان">
+<meta property="og:description" content="خناجر، فضيات، أحجار كريمة، عملات ونحاسيات. بِع واشترِ مباشرة بدون وسيط.">
 <script src="config.js"></script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -263,6 +266,19 @@ function drawCounts(){ $('favN').textContent = FAV.length || ''; }
 function sheet(build){ const s = el('div', { class:'scrim' }), b = el('div', { class:'sheet', role:'dialog', 'aria-modal':'true', dir:'rtl' }); const close = () => s.remove(); s.onclick = e => { if(e.target === s) close(); }; const add = b.append.bind(b); b.append = (...k) => add(...k.flat().filter(c => c != null)); build(b, close); s.append(b); $('root').replaceChildren(s); return close; }
 function sure(e, msg, fn){ const b = e.currentTarget; if(!b.dataset.sure){ b.dataset.sure = 1; b.dataset.old = b.textContent; b.textContent = msg; setTimeout(() => { if(b.isConnected){ delete b.dataset.sure; b.textContent = b.dataset.old; } }, 3000); return; } fn(); }
 function msgFor(a){ return 'السلام عليكم، شفت إعلانك في المندوس: «' + a.title + '» بـ ' + fmtPrice(a.price) + '. هل الغرض للحين متوفر؟'; }
+const SITE = /^https?:/.test(location.protocol) ? location.origin + location.pathname : 'https://shmmuh8-design.github.io/Mandoos/';
+function shareAd(a){
+  const link = SITE + '?ad=' + a.id;
+  const text = '🗝️ ' + a.title + '\n💰 ' + fmtPrice(a.price) + ' · 📍 ' + a.area + '\nشوف الصور وكلّم البائع في «المندوس»:';
+  if(navigator.share) navigator.share({ title:a.title, text, url:link }).catch(() => {});
+  else window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + link), '_blank', 'noopener');
+}
+function sharePrompt(a){
+  sheet((b, close) => b.append(el('h3', { text:'🎉 انتشر إعلانك!' }),
+    el('p', { class:'hint', text:'شاركه في قروبات التراث بالواتساب عشان يوصل لأكثر ناس. اللي يضغط الرابط يفتح له إعلانك على طول بالصور.' }),
+    el('button', { class:'btn wa', type:'button', text:'📤 شارك في الواتساب', onclick:() => { shareAd(a); close(); } }),
+    el('button', { class:'btn ghost', type:'button', text:'بعدين', onclick:close })));
+}
 function openAd(a){
   sheet((b, close) => {
     const p = normPhone(a.phone), fv = isFav(a.id), mine = ME && normPhone(ME.phone) === p;
@@ -276,6 +292,7 @@ function openAd(a){
         el('a', { class:'btn', href:'tel:+' + p, text:'📞 اتصال' }),
         el('a', { class:'btn ghost', href:'sms:+' + p + '&body=' + encodeURIComponent(msgFor(a)), text:'✉️ رسالة' }),
         el('a', { class:'btn wa', href:'https://wa.me/' + p + '?text=' + encodeURIComponent(msgFor(a)), target:'_blank', rel:'noopener', text:'💬 واتساب' })),
+      a.status === 'sold' ? null : el('button', { class:'btn ghost', type:'button', text:mine ? '📤 شارك إعلانك في قروبات الواتساب' : '📤 أرسله لصديق', onclick:() => shareAd(a) }),
       el('p', { class:'hint', text:'نصيحة: عاين الغرض بنفسك قبل ما تدفع، ولا تحوّل فلوس مقدّم لأحد ما تعرفه.' }),
       el('div', { class:'links' },
         el('button', { class:'linkb', type:'button', text:fv ? '♥ في مفضلتي' : '♡ أضف لمفضلتي', onclick:() => { toggleFav(a); openAd(a); } }),
@@ -440,9 +457,10 @@ function sell(edit){
         const paths = [];
         for(const [i, p] of photos.entries()){ go.textContent = 'أرفع الصور… ' + (i + 1) + '/' + photos.length; paths.push(p.path || (p.path = await upload(p.blob))); }
         go.textContent = 'أنشر…';
-        await rpc('ar_post', { p_phone:ME.phone, p_code:ME.code, p_id:edit ? edit.id : null, p_title:title.value.trim(), p_cat:cat, p_price:pr, p_cond:cond, p_gov:gov.value, p_area:area.value, p_descr:desc.value.trim(), p_photos:paths });
+        const res = await rpc('ar_post', { p_phone:ME.phone, p_code:ME.code, p_id:edit ? edit.id : null, p_title:title.value.trim(), p_cat:cat, p_price:pr, p_cond:cond, p_gov:gov.value, p_area:area.value, p_descr:desc.value.trim(), p_photos:paths });
         if(!edit) LS.set('arsa-draft', {});
         close(); toast(edit ? 'انحفظ التعديل ✅' : 'انتشر إعلانك ✅'); S.cat = 'all'; S.gov = ''; S.area = ''; S.q = ''; $('q').value = ''; saveS(); drawCats(); drawGov(); load(true);
+        if(!edit && res && res.id) setTimeout(() => sharePrompt({ id:res.id, title:title.value.trim(), price:pr, area:area.value }), 2200);
       }catch(e){ toast(e.message); go.disabled = false; go.textContent = edit ? 'احفظ التعديل' : 'انشر الإعلان'; }
     };
   });
@@ -450,6 +468,7 @@ function sell(edit){
 $('sellBtn').onclick = () => sell(null);
 
 drawCats(); drawGov(); drawCounts(); load(true);
+(async () => { const id = new URLSearchParams(location.search).get('ad'); if(!/^[0-9a-f-]{36}$/i.test(id || '')) return; try{ const r = await rpc('ar_get', { p_id:id }); if(r && r[0]) openAd(r[0]); else toast('الإعلان انتهى أو انحذف'); }catch(e){} })();
 </script>
 </body>
 </html>
