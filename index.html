@@ -47,6 +47,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .brand .sp{flex:1}
 .demo{font:700 .7rem var(--display);background:var(--copper-soft);color:var(--copper);padding:3px 9px;border-radius:999px}
 .ib{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:7px 11px;font-weight:700;font-size:.85rem;display:inline-flex;align-items:center;gap:5px}
+@media (max-width:440px){.brand{gap:6px}.ib{flex-direction:column;gap:2px;padding:6px 9px;font-size:.76rem;line-height:1.2}.brand .logo{font-size:1.45rem}.brand .logo svg{width:32px;height:32px}}
 .cnt:not(:empty){background:var(--copper);color:var(--copper-ink);border-radius:999px;padding:0 7px;font-size:.75rem}
 .search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0 14px}
 .search input{flex:1;min-width:0;border:0;background:none;padding:12px 0;outline:none}
@@ -122,6 +123,28 @@ footer{margin-top:28px;text-align:center;font-size:.8rem;color:var(--muted)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media (max-width:420px){.row2{grid-template-columns:1fr}.mandoos{grid-template-columns:1fr}.mandoos .art{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* entrance gate */
+.gate{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;
+  padding:calc(24px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));
+  background:radial-gradient(120% 70% at 50% 30%,#7a3f18 0%,#3b2414 55%,#1c110a 100%);color:#fbe9d8;transition:opacity .45s,transform .45s}
+.gate.out{opacity:0;transform:scale(1.04);pointer-events:none}
+.gate svg.chest{width:min(46vw,190px);height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+.gate .lid{transform-origin:50% 62%;transform-box:fill-box;animation:lid 1.6s .3s cubic-bezier(.3,1.4,.5,1) both}
+.gate .glow{animation:glow 1.6s .5s ease-out both}
+@keyframes lid{from{transform:rotate(0)}to{transform:rotate(-24deg) translateY(-6px)}}
+@keyframes glow{from{opacity:0}to{opacity:1}}
+.gate h1{margin:0;font:800 clamp(2.6rem,12vw,3.6rem)/1.1 var(--display);color:#fff}
+.gate .tag{margin:-8px 0 4px;font-size:1rem;opacity:.85;max-width:30ch}
+.gate .doors{display:grid;gap:12px;width:min(100%,380px)}
+.gate button{border:0;border-radius:20px;padding:16px 18px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;align-items:center;text-align:start;font:inherit;cursor:pointer}
+.gate button i{font-style:normal;font-size:2rem;grid-row:span 2}
+.gate button b{font:800 1.25rem/1.2 var(--display)}
+.gate button small{font-size:.85rem;opacity:.8}
+.gate .buy{background:linear-gradient(180deg,#f6c27a,#e09a46);color:#2b170a;box-shadow:0 10px 26px rgba(224,154,70,.35)}
+.gate .sellr{background:rgba(255,255,255,.08);color:#fbe9d8;border:1.5px solid rgba(251,233,216,.35)}
+.gate .note{font-size:.78rem;opacity:.6}
+@media (prefers-reduced-motion:reduce){.gate .lid,.gate .glow{animation:none}.gate{transition:none}}
 </style>
 </head>
 <body>
@@ -158,6 +181,24 @@ footer{margin-top:28px;text-align:center;font-size:.8rem;color:var(--muted)}
   <footer>المندوس · سلطنة عُمان · © سالم الجابري · <a href="mailto:design.omani1@gmail.com" style="color:inherit" dir="ltr">design.omani1@gmail.com</a><br><a href="privacy.html" style="color:inherit">الخصوصية والشروط</a></footer>
 </div>
 <button class="fab" id="sellBtn" type="button">＋ أعلن مجانًا</button>
+<div class="gate" id="gate" role="dialog" aria-label="ادخل المندوس" hidden>
+  <svg class="chest" viewBox="0 0 220 200" aria-hidden="true">
+    <ellipse class="glow" cx="110" cy="96" rx="78" ry="34" fill="#ffd27a" opacity=".55"/>
+    <g class="glow" fill="#ffe2a0"><circle cx="70" cy="70" r="3"/><circle cx="150" cy="58" r="2.5"/><circle cx="112" cy="40" r="3.5"/><circle cx="92" cy="54" r="2"/><circle cx="134" cy="80" r="2"/></g>
+    <rect x="34" y="96" width="152" height="86" rx="10" fill="#9a5424"/>
+    <path d="M34 124h152" stroke="#5e3214" stroke-width="7"/>
+    <path d="M70 96v86M150 96v86" stroke="#d99a3e" stroke-width="7" opacity=".9"/>
+    <rect x="96" y="112" width="28" height="34" rx="6" fill="#f2c25e"/><circle cx="110" cy="126" r="5" fill="#5e3214"/><rect x="108" y="128" width="4" height="10" rx="2" fill="#5e3214"/>
+    <g class="lid"><path d="M34 98V82c0-30 34-50 76-50s76 20 76 50v16z" fill="#b5652c"/><path d="M70 40v58M150 40v58" stroke="#d99a3e" stroke-width="7" opacity=".9"/><path d="M34 96h152" stroke="#5e3214" stroke-width="6"/></g>
+  </svg>
+  <h1>المندوس</h1>
+  <p class="tag">سوق التراث والقطع القديمة في عُمان</p>
+  <div class="doors">
+    <button type="button" class="buy" id="gateBuy"><i>🛒</i><b>دخول المشتري</b><small>تصفّح الكنوز وكلّم البائع مباشرة، بدون تسجيل</small></button>
+    <button type="button" class="sellr" id="gateSell"><i>🗝️</i><b>دخول البائع</b><small>اعرض قطعتك مجانًا، أو ادخل لإعلاناتك</small></button>
+  </div>
+  <p class="note">⚠️ يُمنع بيع القطع الأثرية المحمية بالقانون</p>
+</div>
 <div id="root"></div>
 <div class="toast" id="toast" role="status"></div>
 
@@ -487,6 +528,16 @@ function sell(edit){
 $('sellBtn').onclick = () => sell(null);
 
 drawCats(); drawGov(); drawCounts(); load(true);
+
+/* entrance gate: once per app launch; skipped when opening a shared ad link */
+(function(){
+  const g = $('gate'); let seen = false; try{ seen = sessionStorage.getItem('mandoos-gate') === '1'; }catch(e){}
+  if(seen || /[?&]ad=/.test(location.search)) return;
+  g.hidden = false; document.documentElement.style.overflow = 'hidden';
+  const leave = then => { try{ sessionStorage.setItem('mandoos-gate', '1'); }catch(e){} g.classList.add('out'); document.documentElement.style.overflow = ''; setTimeout(() => { g.hidden = true; then && then(); }, 420); };
+  $('gateBuy').onclick = () => leave();
+  $('gateSell').onclick = () => leave(() => ME ? mySheet() : sell(null));
+})();
 $('shareApp').onclick = () => shareKit({ title:'شارك المندوس', text:'🗝️ المندوس: سوق التراث والقطع القديمة في عُمان. خناجر، فضيات، أحجار كريمة، عملات ونحاسيات. بِع واشترِ مباشرة بدون وسيط 👇', url:SITE });
 (async () => { const id = new URLSearchParams(location.search).get('ad'); if(!/^[0-9a-f-]{36}$/i.test(id || '')) return; try{ const r = await rpc('ar_get', { p_id:id }); if(r && r[0]) openAd(r[0]); else toast('الإعلان انتهى أو انحذف'); }catch(e){} })();
 </script>
