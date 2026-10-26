@@ -114,7 +114,7 @@ textarea.inp{min-height:96px;resize:vertical}
 .thumbs{display:flex;gap:8px;flex-wrap:wrap}
 .thumbs .th{position:relative;width:76px;height:76px}
 .thumbs img{width:76px;height:76px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
-.thumbs .x{position:absolute;top:-6px;inset-inline-end:-6px;width:24px;height:24px;border-radius:50%;border:0;background:var(--fg);color:var(--bg);font-size:.8rem}
+.thumbs .x{position:absolute;top:-8px;inset-inline-end:-8px;width:30px;height:30px;border-radius:50%;border:2px solid var(--surface);background:var(--bad);color:#fff;font-size:.95rem;font-weight:700}
 .addph{width:76px;height:76px;border:2px dashed var(--line);border-radius:10px;display:grid;place-items:center;color:var(--muted);font-size:1.6rem;cursor:pointer}
 .end{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
 .hint{font-size:.8rem;color:var(--muted);margin:0}
@@ -334,6 +334,7 @@ function openAd(a){
         el('a', { class:'btn ghost', href:'sms:+' + p + '&body=' + encodeURIComponent(msgFor(a)), text:'✉️ رسالة' }),
         el('a', { class:'btn wa', href:'https://wa.me/' + normPhone(a.wa || a.phone) + '?text=' + encodeURIComponent(msgFor(a)), target:'_blank', rel:'noopener', text:'💬 واتساب' }),
         a.email ? el('a', { class:'btn ghost', href:'mailto:' + a.email + '?subject=' + encodeURIComponent('المندوس: ' + a.title) + '&body=' + encodeURIComponent(msgFor(a)), text:'📧 إيميل' }) : null),
+      mine ? el('div', { class:'acts' }, el('button', { class:'btn', type:'button', text:'✏️ عدّل الإعلان والصور', onclick:() => sell(a) }), el('button', { class:'btn ghost', type:'button', text:'📋 إعلاناتي', onclick:mySheet })) : null,
       a.status === 'sold' ? null : el('button', { class:'btn ghost', type:'button', text:mine ? '📤 شارك إعلانك في قروبات الواتساب' : '📤 أرسله لصديق', onclick:() => shareAd(a) }),
       el('p', { class:'hint', text:'نصيحة: عاين الغرض بنفسك قبل ما تدفع، ولا تحوّل فلوس مقدّم لأحد ما تعرفه.' }),
       el('div', { class:'links' },
