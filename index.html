@@ -157,7 +157,7 @@ footer{margin-top:28px;text-align:center;font-size:.8rem;color:var(--muted)}
       <div class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="currentColor"/><path d="M14 28c0-8 8-13 18-13s18 5 18 13z" fill="#fff" opacity=".9"/><rect x="14" y="28" width="36" height="22" rx="3" fill="#fff"/><path d="M14 36h36M24 28v22M40 28v22" stroke="currentColor" stroke-width="2.5"/><rect x="28" y="32" width="8" height="9" rx="2" fill="#e0a43a"/><circle cx="32" cy="36" r="1.6" fill="currentColor"/></svg>المندوس</div>
       <span class="sp"></span>
       <button class="ib" id="favBtn" type="button">♡ مفضلتي <span class="cnt num" id="favN"></span></button>
-      <button class="ib" id="mineBtn" type="button">📋 إعلاناتي</button>
+      <button class="ib" id="mineBtn" type="button">🔑 دخول</button>
       <button class="ib" id="shareApp" type="button" aria-label="شارك المندوس">📤 شارك</button>
     </div>
     <div class="search"><span aria-hidden="true">🔎</span><input id="q" type="search" placeholder="دوّر: خنجر، زمرد، مندوس…" aria-label="بحث"></div>
@@ -422,7 +422,7 @@ function loginSheet(then){
     const ph = el('input', { class:'inp', id:'lPhone', placeholder:'9XXXXXXX', inputmode:'tel', dir:'ltr' }), cd = el('input', { class:'inp', id:'lCode', placeholder:'مثال: 8E7B9F24', dir:'ltr', autocapitalize:'characters', autocomplete:'off' });
     const go = el('button', { class:'btn', type:'button', text:'دخول' });
     b.append(el('h3', { text:'🔑 دخول البائع' }), fld('رقم الجوال', ph), fld('رمز الدخول', cd), el('p', { class:'hint', text:'نسيت الرمز؟ راسل الإدارة: ' + CONTACT }),
-      el('div', { class:'end' }, el('button', { class:'btn ghost', type:'button', text:'رجوع', onclick:() => accountSheet(then) }), go));
+      el('div', { class:'end' }, el('button', { class:'btn ghost', type:'button', text:'حساب جديد', onclick:() => accountSheet(then) }), go));
     go.onclick = async () => {
       const phone = normPhone(ph.value), code = cd.value.trim().toUpperCase();
       if(!/^968\d{8}$/.test(phone) || code.length < 6) return toast('اكتب الرقم والرمز صح');
@@ -439,7 +439,7 @@ async function mySheet(){
   catch(e){ toast(e.message); if(/غلط|موقوف/.test(e.message)){ ME = null; LS.set('arsa-me', null); } return; }
   sheet((b, close) => {
     const st = { active:['شغّال','palm'], sold:['انباع','cop'], hidden:['مخفي (بلاغات)',''], blocked:['موقوف','']};
-    b.append(el('h3', { text:'📋 إعلاناتي' }), el('p', { class:'hint', text:'باسم ' + me.name + ' · +' + me.phone }));
+    b.append(el('h3', { text:'👤 حسابي · إعلاناتي' }), el('p', { class:'hint', text:'باسم ' + me.name + ' · +' + me.phone }));
     if(!me.ads.length) b.append(el('p', { class:'hint', text:'ما نزّلت إعلانات للحين.' }));
     me.ads.forEach(a => {
       const [lbl, cls] = st[a.status] || [a.status, ''];
@@ -456,7 +456,7 @@ async function mySheet(){
     b.append(el('button', { class:'btn', type:'button', text:'＋ إعلان جديد', onclick:() => sell(null) }),
       el('button', { class:'btn ghost', type:'button', text:'📞 طرق التواصل معي', onclick:() => contactSheet(me) }),
       el('div', { class:'links' },
-        el('button', { class:'linkb', type:'button', text:'تسجيل خروج', onclick:e => sure(e, 'بتحتاج رمزك ترجع، متأكد؟', () => { ME = null; LS.set('arsa-me', null); close(); toast('طلعت من حسابك'); }) }),
+        el('button', { class:'linkb', type:'button', style:'font-weight:800', text:'🚪 تسجيل خروج', onclick:e => sure(e, 'بتحتاج رمزك ترجع، متأكد؟', () => { ME = null; LS.set('arsa-me', null); close(); toast('طلعت من حسابك'); }) }),
         el('button', { class:'linkb', type:'button', style:'color:var(--bad)', text:'🗑️ حذف حسابي وكل إعلاناتي', onclick:e => sure(e, 'اضغط مرة ثانية للتأكيد', async () => { try{ await rpc('ar_delete_account', { p_phone:ME.phone, p_code:ME.code }); ME = null; LS.set('arsa-me', null); close(); load(true); toast('انحذف حسابك ✅'); }catch(er){ toast(er.message); } }) })),
       el('button', { class:'btn ghost', type:'button', text:'إغلاق', onclick:close }));
   });
@@ -465,7 +465,11 @@ async function setSt(a, s){
   try{ await rpc('ar_set_status', { p_phone:ME.phone, p_code:ME.code, p_id:a.id, p_status:s }); toast(s === 'deleted' ? 'انحذف الإعلان' : s === 'sold' ? 'مبروك البيع 🎉' : 'رجع شغّال ✅'); load(true); mySheet(); }
   catch(e){ toast(e.message); }
 }
-$('mineBtn').onclick = mySheet;
+// زر الدخول / الحساب: يتغيّر حسب حالة الدخول
+function meLabel(){ const b = $('mineBtn'); if(b) b.textContent = ME ? '👤 حسابي' : '🔑 دخول'; }
+{ const _set = LS.set.bind(LS); LS.set = (k, v) => { _set(k, v); if(k === 'arsa-me') meLabel(); }; }
+$('mineBtn').onclick = () => ME ? mySheet() : loginSheet(null);
+meLabel();
 
 /* ---------- sell ---------- */
 function shrink(file){
