@@ -46,6 +46,7 @@ workflows:
         script: xcode-project use-profiles
       - name: رقم البناء
         script: |
+          sed -i '' 's/MARKETING_VERSION = [0-9.]*;/MARKETING_VERSION = 1.1;/g' ios/App/App.xcodeproj/project.pbxproj   # رقم النسخة في المتجر
           cd ios/App
           agvtool new-version -all $((BUILD_NUMBER + 1))
       - name: بناء ملف IPA
