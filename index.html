@@ -217,6 +217,67 @@ body::before{background:var(--bg)}
 .tips i{font-style:normal;font-size:1.8rem}
 .tiplist{margin:0;padding-inline-start:20px;display:grid;gap:8px}
 .tiplist li::marker{color:var(--gold-d)}
+
+/* ===== v2: بنفسجي داكن (حسب تصميم سالم) ===== */
+:root:root:root:not([data-zz]){
+  --bg:#1a0827; --surface:#2b1140; --sunk:#220d35; --line:rgba(232,181,62,.22); --fg:#f7eefc; --muted:#c3add3;
+  --copper:#f2c45a; --copper-ink:#2b0f3d; --copper-soft:rgba(232,181,62,.16); --palm:#7cd3a5; --palm-soft:rgba(124,211,165,.14); --wa:#2fbf6c; --bad:#ff8f98; --star:#f3c34a;
+  --gold-d:#e8b53e; --plum:linear-gradient(160deg,#4a1a66,#2b0d40);
+  --shadow:0 2px 4px rgba(0,0,0,.35),0 12px 28px rgba(0,0,0,.35); color-scheme:dark}
+html,body{background:#1a0827}
+body{background:radial-gradient(120% 60% at 50% -10%,#4b1a68 0%,#24093a 45%,#16061f 100%) fixed;color:var(--fg)}
+body::before,.head{background:linear-gradient(180deg,#2c0d43 0%,rgba(36,9,58,.97) 100%)}
+.head{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px));border-radius:0 0 22px 22px;box-shadow:0 10px 24px rgba(0,0,0,.35);overflow:hidden}
+.brand{position:relative;min-height:62px}
+.brand .logo{color:#f2c45a;font-size:1.75rem;position:relative;z-index:1;text-shadow:0 2px 10px rgba(232,181,62,.35)}
+.brand .logo small{color:#e9d6f5;font-size:.66rem;text-shadow:none}
+.brand .logo svg{background:var(--g-grad);color:#3b1052;box-shadow:0 0 0 2px #ffe08a,0 6px 16px rgba(232,181,62,.35)}
+.hart{position:absolute;inset-inline-end:-6px;top:-14px;height:80px;width:auto;pointer-events:none;opacity:.95}
+.hbtns{display:flex;gap:8px}
+.hbtns .ib{flex:1 1 0;justify-content:center;padding:7px 4px;font-size:.8rem;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(232,181,62,.35);color:#f7eefc}
+#favBtn,#mineBtn{display:inline-flex}
+.search{background:rgba(255,255,255,.07);border-color:rgba(232,181,62,.3);box-shadow:none}
+.search input::placeholder{color:#b49cc6}
+.cats{gap:8px;padding:2px 0 8px}
+.cat{width:78px;min-width:78px;height:86px;justify-content:center;border-radius:16px;background:linear-gradient(170deg,#43195e,#2a0e3e);border:1px solid rgba(232,181,62,.22);color:#f1e4fa;font-size:.72rem;line-height:1.25;padding:6px 4px;text-align:center;box-shadow:0 6px 14px rgba(0,0,0,.3)}
+.cat b{width:auto;height:auto;background:none;box-shadow:none;font-size:1.7rem;border-radius:0}
+.cat[aria-pressed="true"]{background:linear-gradient(170deg,#6b2a86,#3e1257);border:1.5px solid #f2c45a;color:#ffd76e;box-shadow:0 0 0 2px rgba(242,196,90,.25),0 8px 18px rgba(232,181,62,.25)}
+.cat[aria-pressed="true"] b{box-shadow:none}
+.mandoos{background:linear-gradient(160deg,#4b1a68,#2a0b3e);border:1px solid rgba(232,181,62,.35)}
+.sel{background:rgba(255,255,255,.06);border-color:rgba(232,181,62,.3);color:var(--fg)}
+.sel option{background:#2b1140;color:#fff}
+.reshead h2{color:#fff}
+.card{background:linear-gradient(180deg,#34154c,#26103a);border:1px solid rgba(232,181,62,.18)}
+.card .img{background:radial-gradient(circle at 50% 60%,#f3dcb5,#c9a37a)}
+.card .t{color:#fff}
+.card .heart{background:rgba(255,255,255,.92)}
+.tips{background:linear-gradient(170deg,#34154c,#26103a);border-color:rgba(232,181,62,.25)}
+.tips b{color:#f2c45a}
+.btn{background:linear-gradient(160deg,#6b2a86,#45165f);border:1px solid rgba(232,181,62,.35)}
+.btn.ghost{background:rgba(255,255,255,.06);color:#f7eefc;border-color:rgba(232,181,62,.3)}
+.btn.gold{border:0}
+.btn.wa{background:var(--wa);border:0}
+.sheet{background:linear-gradient(180deg,#2a0e3f,#1c0829);color:var(--fg);border-top:1.5px solid rgba(232,181,62,.4)}
+.inp,textarea,.sheet select{background:rgba(255,255,255,.06);border-color:rgba(232,181,62,.3);color:var(--fg)}
+.seller{background:rgba(255,255,255,.05);border-color:rgba(232,181,62,.2)}
+.seller .av{background:var(--g-grad);color:#3b1052}
+.secT{color:#f2c45a}
+#tabbar{background:linear-gradient(180deg,#30104a,#1e0830);border-top-color:rgba(232,181,62,.45)}
+#tabbar .plus{border-color:#1a0827}
+.toast{background:#f2c45a;color:#2b0f3d}
+footer,footer a{color:#b49cc6!important}
+.catlist{display:grid;gap:10px}
+.catlist button{display:flex;align-items:center;gap:14px;border:1px solid rgba(232,181,62,.25);background:linear-gradient(170deg,#43195e,#2a0e3e);border-radius:18px;padding:14px 16px;color:#fff;font:800 1.1rem var(--display);text-align:start;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.catlist button b{font-size:2rem;line-height:1}
+.catlist button span{flex:1}
+.catlist button i{font-style:normal;color:#f2c45a;font-size:1.3rem}
+.catlist button.on{border-color:#f2c45a;background:linear-gradient(170deg,#6b2a86,#3e1257)}
+.setlist{display:grid;gap:8px}
+.setlist button,.setlist a{display:flex;align-items:center;gap:12px;border:1px solid rgba(232,181,62,.22);background:rgba(255,255,255,.05);border-radius:16px;padding:13px 16px;color:#fff;font-weight:800;text-decoration:none;text-align:start}
+.setlist i{font-style:normal;font-size:1.3rem;width:28px;text-align:center}
+.setlist span{flex:1}
+.setlist em{font-style:normal;color:#f2c45a}
+.gate{background:radial-gradient(120% 70% at 50% 30%,#5a1f78 0%,#2c0b42 55%,#14051e 100%)}
 </style>
 </head>
 <body>
@@ -225,10 +286,12 @@ body::before{background:var(--bg)}
   <header class="head">
     <div class="brand">
       <div class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="currentColor"/><path d="M14 28c0-8 8-13 18-13s18 5 18 13z" fill="#fff" opacity=".9"/><rect x="14" y="28" width="36" height="22" rx="3" fill="#fff"/><path d="M14 36h36M24 28v22M40 28v22" stroke="currentColor" stroke-width="2.5"/><rect x="28" y="32" width="8" height="9" rx="2" fill="#e0a43a"/><circle cx="32" cy="36" r="1.6" fill="currentColor"/></svg><span>المندوس<small>سوق التراث العُماني</small></span></div>
-      <span class="sp"></span>
+      <svg class="hart" viewBox="0 0 200 90" aria-hidden="true"><defs><linearGradient id="hf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a3a8f"/><stop offset="1" stop-color="#3a1352"/></linearGradient><radialGradient id="hg"><stop offset="0" stop-color="#ffd27a" stop-opacity=".7"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient></defs><path d="M60 90V58h8v-6h6v6h8V46h-4v-6h5v-5h6v5h5v6h-4v12h10V50h6v-5h5v5h6v8h8v32z" fill="url(#hf)" opacity=".9"/><circle cx="30" cy="40" r="26" fill="url(#hg)"/><g transform="translate(20 22)"><path d="M10 0v6" stroke="#e8b53e" stroke-width="2"/><path d="M4 8h12l-2 16H6z" fill="#3b1052" stroke="#e8b53e" stroke-width="1.6"/><rect x="7" y="11" width="6" height="9" rx="2" fill="#ffd27a"/></g></svg>
+    </div>
+    <div class="hbtns">
       <button class="ib" id="favBtn" type="button">♡ مفضلتي <span class="cnt num" id="favN"></span></button>
       <button class="ib" id="mineBtn" type="button">🔑 دخول</button>
-      <button class="ib" id="shareApp" type="button" aria-label="شارك المندوس">📤</button>
+      <button class="ib" id="shareApp" type="button" aria-label="شارك المندوس">📤 شارك</button>
     </div>
     <div class="search"><span aria-hidden="true">🔎</span><input id="q" type="search" placeholder="دوّر: خنجر، زمرد، مندوس…" aria-label="بحث"></div>
   </header>
@@ -362,7 +425,7 @@ function drawGrid(){
   $('moreBtn').hidden = !MORE || LOADING;
   drawCounts();
   const nn = LAST ? L.filter(a => new Date(a.created_at).getTime() > LAST).length : 0;
-  $('newN').hidden = !nn; $('newN').textContent = '🆕 ' + nn + ' جديد من آخر زيارة';
+  $('newN').hidden = !nn; $('newN').textContent = '🆕 ' + nn + ' جديد';
   drawRecent();
 }
 const isFav = id => FAV.some(f => f.id === id);
@@ -457,8 +520,23 @@ function tips(){
     el('button', { class:'btn', type:'button', text:'فهمت 👍', onclick:close })));
 }
 function catsSheet(){
-  sheet((b, close) => b.append(el('h3', { text:'🗂️ الأقسام' }),
-    el('div', { class:'catgrid' }, CATS.map(([id, ic, n]) => el('button', { type:'button', onclick:() => { S.cat = id; saveS(); drawCats(); load(true); close(); scrollTo({ top:0, behavior:'smooth' }); } }, el('b', { text:ic }), n))),
+  sheet((b, close) => b.append(el('h3', { text:'🗂️ التصنيفات' }),
+    el('div', { class:'catlist' }, CATS.map(([id, ic, n]) => el('button', { type:'button', class:S.cat === id ? 'on' : '', onclick:() => { S.cat = id; saveS(); drawCats(); load(true); close(); scrollTo({ top:0, behavior:'smooth' }); } }, el('b', { text:ic }), el('span', { text:n }), el('i', { text:'‹' })))),
+    el('button', { class:'btn ghost', type:'button', text:'إغلاق', onclick:close })));
+}
+function settingsSheet(){
+  const row = (ic, t, fn, extra) => el('button', { type:'button', onclick:fn }, el('i', { text:ic }), el('span', { text:t }), extra ? el('em', { text:extra }) : null, el('i', { text:'‹' }));
+  const link = (ic, t, href) => el('a', { href, target:'_blank', rel:'noopener' }, el('i', { text:ic }), el('span', { text:t }), el('i', { text:'‹' }));
+  sheet((b, close) => b.append(el('h3', { text:'⚙️ الإعدادات' }),
+    el('div', { class:'setlist' },
+      row('👤', ME ? 'حسابي وإعلاناتي' : 'تسجيل الدخول', () => { close(); ME ? mySheet() : loginSheet(null); }, ME ? (ME.name || '') : ''),
+      row('♡', 'مفضلتي', () => { close(); favSheet(); }, String(FAV.length || '')),
+      row('🛡️', 'نصائح الشراء الآمن', () => { close(); tips(); }),
+      row('📤', 'شارك المندوس', () => { close(); $('shareApp').click(); }),
+      link('🔒', 'سياسة الخصوصية', 'privacy.html'),
+      link('💬', 'الدعم والتواصل', 'support.html'),
+      link('🌐', 'تطبيقاتنا: techlights.app', 'https://techlights.app')),
+    el('p', { class:'hint', style:'text-align:center', text:'المندوس — سوق التراث العُماني · © سالم الجابري، مسقط' }),
     el('button', { class:'btn ghost', type:'button', text:'إغلاق', onclick:close })));
 }
 const LAST = LS.get('arsa-last', 0); LS.set('arsa-last', Date.now());
@@ -650,9 +728,9 @@ function sell(edit){
 $('sellBtn').onclick = () => sell(null);
 $('tipsBtn').onclick = tips;
 (function(){
-  const I = { home:'<path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z"/>', grid:'<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/>', heart:'<path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.6 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/>', user:'<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.2-3.7 4-5.5 7.5-5.5s6.3 1.8 7.5 5.5"/>' };
+  const I = { home:'<path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z"/>', grid:'<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/>', heart:'<path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.6 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/>', gear:'<circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>', user:'<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.2-3.7 4-5.5 7.5-5.5s6.3 1.8 7.5 5.5"/>' };
   const sv = k => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + I[k] + '</svg>';
-  const T = [['home','الرئيسية',() => { S.cat = 'all'; saveS(); drawCats(); load(true); scrollTo({ top:0, behavior:'smooth' }); }], ['grid','الأقسام',catsSheet], ['plus','أعلن',() => sell(null)], ['heart','المفضلة',favSheet], ['user','حسابي',() => ME ? mySheet() : loginSheet(null)]];
+  const T = [['home','الرئيسية',() => { S.cat = 'all'; saveS(); drawCats(); load(true); scrollTo({ top:0, behavior:'smooth' }); }], ['grid','التصنيفات',catsSheet], ['plus','أعلن',() => sell(null)], ['heart','المفضلة',favSheet], ['gear','الإعدادات',settingsSheet]];
   $('tabbar').innerHTML = T.map(([k, n], i) => '<button type="button" data-i="' + i + '"' + (i === 0 ? ' aria-current="true"' : '') + '>' + (k === 'plus' ? '<span class="plus">＋</span>' : sv(k)) + '<span>' + n + '</span></button>').join('');
   $('tabbar').onclick = e => { const b = e.target.closest('[data-i]'); if(b) T[+b.dataset.i][2](); };
 })();
