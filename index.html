@@ -148,6 +148,75 @@ footer{margin-top:28px;padding-bottom:90px;text-align:center;font-size:.8rem;col
 .gate .sellr{background:rgba(255,255,255,.08);color:#fbe9d8;border:1.5px solid rgba(251,233,216,.35)}
 .gate .note{font-size:.78rem;opacity:.6}
 @media (prefers-reduced-motion:reduce){.gate .lid,.gate .glow{animation:none}.gate{transition:none}}
+
+/* ===== سوق التراث: بنفسجي وذهبي وكريمي ===== */
+:root:root:root:not([data-zz]){
+  --bg:#f7efe1; --surface:#fffaf1; --sunk:#efe2cc; --line:#e7d6b9; --fg:#2b1235; --muted:#7b6a80;
+  --copper:#5b1f73; --copper-ink:#fff; --copper-soft:#f1e3f6; --palm:#2f6b4f; --palm-soft:#e2efe6; --wa:#1f9d55; --bad:#b4313b; --star:#d9a521;
+  --gold:#e8b53e; --gold-d:#a8770f; --g-grad:linear-gradient(180deg,#ffe08a,#e8b53e 50%,#b98316); --plum:linear-gradient(160deg,#6d2a88,#3b1052);
+  --shadow:0 1px 2px rgba(59,16,82,.08),0 10px 24px rgba(59,16,82,.12); color-scheme:light}
+body{background:var(--bg)}
+.wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
+body::before{background:var(--bg)}
+.head{background:var(--bg)}
+.brand .logo{color:var(--copper);font-size:1.5rem}
+.brand .logo svg{width:44px;height:44px;border-radius:12px;background:var(--plum);padding:5px;color:#e8b53e;box-shadow:0 0 0 2px #e8b53e,0 6px 16px rgba(91,31,115,.35)}
+.brand .logo small{display:block;font:700 .62rem var(--body);color:var(--gold-d);letter-spacing:0}
+#favBtn,#mineBtn{display:none}
+.ib{background:var(--surface);border-color:var(--line);color:var(--copper)}
+@media (max-width:440px){.brand{flex-wrap:nowrap}.brand .sp{flex-basis:auto;height:auto}.ib{flex:none;font-size:.85rem;padding:7px 11px}}
+.search{border-radius:999px;border:1.5px solid var(--line);background:var(--surface);box-shadow:0 4px 14px rgba(59,16,82,.06)}
+.cats{gap:10px;padding:2px 2px 6px}
+.cat{background:none;border:0;min-width:70px;padding:0;color:var(--fg);font-size:.74rem;gap:4px}
+.cat b{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:1.6rem;background:var(--plum);box-shadow:inset 0 0 0 1.5px rgba(232,181,62,.55),0 6px 14px rgba(59,16,82,.25)}
+.cat[aria-pressed="true"]{background:none;color:var(--copper)}
+.cat[aria-pressed="true"] b{box-shadow:0 0 0 3px #e8b53e,0 8px 18px rgba(232,181,62,.45)}
+.mandoos{background:var(--plum);color:#f6e7ff;border:1px solid rgba(232,181,62,.4);position:relative;overflow:hidden}
+.mandoos::after{content:"";position:absolute;inset:auto -30px -40px auto;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(232,181,62,.35),transparent 70%)}
+.mandoos h2{color:#ffe7a6}
+.mandoos button{background:var(--g-grad);color:#3b1052;box-shadow:0 6px 16px rgba(232,181,62,.4)}
+.sel{border-radius:999px;background:var(--surface)}
+.reshead{gap:8px}.reshead h2{color:var(--copper);white-space:nowrap}
+.card{border:0;border-radius:20px;background:var(--surface);box-shadow:var(--shadow)}
+.card .img{border-radius:18px 18px 0 0}
+.card .body{position:relative;padding:20px 12px 12px}
+.card .body .price{position:absolute;top:-15px;inset-inline-start:10px;order:0;margin:0;background:var(--g-grad);color:#3b1052;border-radius:999px;padding:2px 12px;font-size:.95rem;box-shadow:0 4px 12px rgba(185,131,22,.45);z-index:1}
+.card .heart{background:#fff;color:#5b1f73;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+.card .heart.on{color:#d0343b}
+.pill.cop{background:var(--copper-soft);color:var(--copper)}
+.btn{background:var(--plum);color:#fff;border-radius:999px;box-shadow:0 6px 16px rgba(59,16,82,.25)}
+.btn.ghost{background:var(--surface);color:var(--copper);border:1.5px solid var(--line);box-shadow:none}
+.btn.gold{background:var(--g-grad);color:#3b1052;box-shadow:0 6px 16px rgba(185,131,22,.35)}
+.bigprice{display:inline-block;align-self:flex-start;background:var(--g-grad);color:#3b1052;border-radius:999px;padding:2px 16px}
+.chip[aria-pressed="true"]{border-color:var(--copper);color:#fff;background:var(--copper)}
+.sheet{background:var(--bg)}
+.seller{background:var(--surface);border:1px solid var(--line)}
+.seller .av{background:var(--plum);color:#e8b53e}
+.fab{display:none}
+.toast{bottom:calc(100px + env(safe-area-inset-bottom,0px));background:#3b1052;color:#ffe7a6}
+.gate{background:radial-gradient(120% 70% at 50% 30%,#7d3299 0%,#4a165f 50%,#22072e 100%);color:#f6e7ff}
+.gate h1{background:var(--g-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gate .buy{background:var(--g-grad);color:#3b1052}
+.gate .sellr{border-color:rgba(232,181,62,.5)}
+/* bottom bar */
+#tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);align-items:end;height:calc(70px + env(safe-area-inset-bottom,0px));padding:0 6px env(safe-area-inset-bottom,0px);background:var(--plum);border-radius:22px 22px 0 0;box-shadow:0 -8px 24px rgba(34,7,46,.35);border-top:1.5px solid rgba(232,181,62,.55)}
+#tabbar button{border:0;background:none;color:#d9c4e3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;height:70px;font:700 .62rem var(--body)}
+#tabbar button[aria-current="true"]{color:#ffd76e}
+#tabbar svg{width:26px;height:26px}
+#tabbar .plus{width:60px;height:60px;margin-top:-30px;border-radius:50%;display:grid;place-items:center;background:var(--g-grad);color:#3b1052;font-size:2rem;font-weight:800;border:4px solid var(--bg);box-shadow:0 8px 20px rgba(185,131,22,.5)}
+.catgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.catgrid button{border:1px solid var(--line);background:var(--surface);border-radius:20px;padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:800;color:var(--fg);box-shadow:var(--shadow)}
+.catgrid b{font-size:2.4rem;line-height:1.2}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,42%);gap:12px;overflow-x:auto;scrollbar-width:none;padding:4px 2px 10px}
+.rail::-webkit-scrollbar{display:none}
+.secT{display:flex;align-items:center;gap:8px;margin:16px 0 8px;font:800 1.05rem var(--display);color:var(--copper)}
+.newb{background:var(--g-grad);color:#3b1052;border-radius:999px;padding:0 10px;font-size:.75rem;font-weight:800}
+.tips{margin-top:12px;display:flex;gap:10px;align-items:center;width:100%;border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:12px 14px;text-align:start;color:var(--fg);box-shadow:var(--shadow)}
+.tips b{display:block;color:var(--copper)}
+.tips span{font-size:.8rem;color:var(--muted)}
+.tips i{font-style:normal;font-size:1.8rem}
+.tiplist{margin:0;padding-inline-start:20px;display:grid;gap:8px}
+.tiplist li::marker{color:var(--gold-d)}
 </style>
 </head>
 <body>
@@ -155,11 +224,11 @@ footer{margin-top:28px;padding-bottom:90px;text-align:center;font-size:.8rem;col
 <div class="wrap" dir="rtl" lang="ar">
   <header class="head">
     <div class="brand">
-      <div class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="currentColor"/><path d="M14 28c0-8 8-13 18-13s18 5 18 13z" fill="#fff" opacity=".9"/><rect x="14" y="28" width="36" height="22" rx="3" fill="#fff"/><path d="M14 36h36M24 28v22M40 28v22" stroke="currentColor" stroke-width="2.5"/><rect x="28" y="32" width="8" height="9" rx="2" fill="#e0a43a"/><circle cx="32" cy="36" r="1.6" fill="currentColor"/></svg>المندوس</div>
+      <div class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="currentColor"/><path d="M14 28c0-8 8-13 18-13s18 5 18 13z" fill="#fff" opacity=".9"/><rect x="14" y="28" width="36" height="22" rx="3" fill="#fff"/><path d="M14 36h36M24 28v22M40 28v22" stroke="currentColor" stroke-width="2.5"/><rect x="28" y="32" width="8" height="9" rx="2" fill="#e0a43a"/><circle cx="32" cy="36" r="1.6" fill="currentColor"/></svg><span>المندوس<small>سوق التراث العُماني</small></span></div>
       <span class="sp"></span>
       <button class="ib" id="favBtn" type="button">♡ مفضلتي <span class="cnt num" id="favN"></span></button>
       <button class="ib" id="mineBtn" type="button">🔑 دخول</button>
-      <button class="ib" id="shareApp" type="button" aria-label="شارك المندوس">📤 شارك</button>
+      <button class="ib" id="shareApp" type="button" aria-label="شارك المندوس">📤</button>
     </div>
     <div class="search"><span aria-hidden="true">🔎</span><input id="q" type="search" placeholder="دوّر: خنجر، زمرد، مندوس…" aria-label="بحث"></div>
   </header>
@@ -171,13 +240,15 @@ footer{margin-top:28px;padding-bottom:90px;text-align:center;font-size:.8rem;col
     <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><span class="art" aria-hidden="true">🗝️</span><button type="button" id="goMandoos">＋ اعرض قطعتك</button></div>
   </section>
 
+  <div id="recentBox" hidden><div class="secT">👁️ شاهدتها مؤخرًا</div><div class="rail" id="recent"></div></div>
+  <button class="tips" type="button" id="tipsBtn"><i>🛡️</i><div><b>نصائح الشراء الآمن</b><span>اقرأها قبل ما تشتري</span></div></button>
   <div class="filters">
     <select class="sel" id="gov" aria-label="المحافظة"></select>
     <select class="sel" id="area" aria-label="الولاية"></select>
     <select class="sel" id="sort" aria-label="الترتيب"><option value="new">الأحدث</option><option value="low">الأرخص</option><option value="high">الأغلى</option></select>
   </div>
 
-  <div class="reshead"><h2 id="resTitle">كل الإعلانات</h2><small id="resN" class="num"></small></div>
+  <div class="reshead"><h2 id="resTitle">كل الإعلانات</h2><span class="newb" id="newN" hidden></span><small id="resN" class="num"></small></div>
   <div class="grid" id="grid"></div>
 
   <div style="display:flex;justify-content:center;margin-top:16px"><button class="btn ghost" type="button" id="moreBtn" hidden>عرض المزيد</button></div>
@@ -203,6 +274,7 @@ footer{margin-top:28px;padding-bottom:90px;text-align:center;font-size:.8rem;col
   <p class="note">⚠️ يُمنع بيع القطع الأثرية المحمية بالقانون</p>
 </div>
 <div id="root"></div>
+<nav id="tabbar" aria-label="القائمة"></nav>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -289,6 +361,9 @@ function drawGrid(){
   L.forEach(a => g.append(card(a)));
   $('moreBtn').hidden = !MORE || LOADING;
   drawCounts();
+  const nn = LAST ? L.filter(a => new Date(a.created_at).getTime() > LAST).length : 0;
+  $('newN').hidden = !nn; $('newN').textContent = '🆕 ' + nn + ' جديد من آخر زيارة';
+  drawRecent();
 }
 const isFav = id => FAV.some(f => f.id === id);
 function card(a){
@@ -324,8 +399,10 @@ function sharePrompt(a){
     el('button', { class:'btn ghost', type:'button', text:'بعدين', onclick:close })));
 }
 function openAd(a){
+  remember(a);
   sheet((b, close) => {
     const p = normPhone(a.phone), fv = isFav(a.id), mine = ME && normPhone(ME.phone) === p;
+    const same = ADS.filter(x => x.id !== a.id && normPhone(x.phone) === p && x.status !== 'sold' && !HIDDEN.has(x.id)).slice(0, 10);
     b.append(el('div', { class:'gal' }, a.photos.map(src => el('img', { src:photoUrl(src), alt:a.title }))),
       a.photos.length > 1 ? el('p', { class:'hint', text:'اسحب للصور الثانية (' + a.photos.length + ' صور)' }) : null,
       el('div', { class:'bigprice num', text:fmtPrice(a.price) }), el('h3', { text:a.title }),
@@ -337,6 +414,8 @@ function openAd(a){
         el('a', { class:'btn ghost', href:'sms:+' + p + '&body=' + encodeURIComponent(msgFor(a)), text:'✉️ رسالة' }),
         el('a', { class:'btn wa', href:'https://wa.me/' + normPhone(a.wa || a.phone) + '?text=' + encodeURIComponent(msgFor(a)), target:'_blank', rel:'noopener', text:'💬 واتساب' }),
         a.email ? el('a', { class:'btn ghost', href:'mailto:' + a.email + '?subject=' + encodeURIComponent('المندوس: ' + a.title) + '&body=' + encodeURIComponent(msgFor(a)), text:'📧 إيميل' }) : null),
+      (!mine && a.status !== 'sold' && +a.price) ? el('button', { class:'btn gold', type:'button', text:'🤝 سُم القطعة (اعرض سعرك)', onclick:() => offer(a) }) : null,
+      same.length ? el('div', {}, el('div', { class:'secT', text:'🏪 قطع ثانية عند ' + (a.seller || 'نفس البائع') }), el('div', { class:'rail' }, same.map(card))) : null,
       mine ? el('div', { class:'acts' }, el('button', { class:'btn', type:'button', text:'✏️ عدّل الإعلان والصور', onclick:() => sell(a) }), el('button', { class:'btn ghost', type:'button', text:'📋 إعلاناتي', onclick:mySheet })) : null,
       a.status === 'sold' ? null : el('button', { class:'btn ghost', type:'button', text:mine ? '📤 شارك إعلانك في قروبات الواتساب' : '📤 أرسله لصديق', onclick:() => shareAd(a) }),
       el('p', { class:'hint', text:'نصيحة: عاين الغرض بنفسك قبل ما تدفع، ولا تحوّل فلوس مقدّم لأحد ما تعرفه.' }),
@@ -348,6 +427,41 @@ function openAd(a){
       el('button', { class:'btn ghost', type:'button', text:'إغلاق', onclick:close }));
   });
 }
+function offer(a){
+  sheet((b, close) => {
+    const p = normPhone(a.wa || a.phone);
+    const v = el('input', { class:'inp', inputmode:'decimal', dir:'ltr', placeholder:'مثال: ' + Math.round(+a.price * .85), value:'' });
+    const note = el('input', { class:'inp', maxlength:120, placeholder:'ملاحظة (اختياري): مثلًا أقدر أعاين بكره العصر' });
+    b.append(el('h3', { text:'🤝 سُم «' + a.title + '»' }), el('p', { class:'hint', text:'السعر المعروض: ' + fmtPrice(a.price) + '. اكتب سعرك، وتروح رسالة مهذبة للبائع بالواتساب.' }),
+      fld('سعرك (ر.ع)', v), fld('ملاحظة', note),
+      el('div', { class:'end' }, el('button', { class:'btn ghost', type:'button', text:'رجوع', onclick:() => openAd(a) }), el('button', { class:'btn wa', type:'button', text:'💬 أرسل عرضي', onclick:() => {
+        const n = parseFloat(digits(v.value)); if(!(n > 0)) return toast('اكتب سعرك بالأرقام');
+        const msg = 'السلام عليكم، شفت قطعتك في المندوس: «' + a.title + '» (' + fmtPrice(a.price) + ').\nأعرض عليك ' + fmtPrice(n) + ' إذا يناسبك' + (note.value.trim() ? '.\n' + note.value.trim() : '.') + '\nوشكرًا 🌹';
+        location.href = 'https://wa.me/' + p + '?text=' + encodeURIComponent(msg); close(); } })),
+      el('p', { class:'hint', text:'السوم بالأدب والذوق، والبائع حر يقبل أو يرفض.' }));
+  });
+}
+function remember(a){
+  const r = LS.get('arsa-recent', []).filter(x => x.id !== a.id);
+  r.unshift({ id:a.id, title:a.title, price:a.price, area:a.area, gov:a.gov, cat:a.cat, cond:a.cond, descr:a.descr, photos:a.photos.slice(0, 1), seller:a.seller, phone:a.phone, wa:a.wa, email:a.email, created_at:a.created_at, status:a.status });
+  LS.set('arsa-recent', r.slice(0, 12)); drawRecent();
+}
+function drawRecent(){
+  const r = LS.get('arsa-recent', []).filter(x => !HIDDEN.has(x.id));
+  $('recentBox').hidden = !r.length || S.cat !== 'all' || !!S.q.trim();
+  $('recent').replaceChildren(...r.map(card));
+}
+function tips(){
+  sheet((b, close) => b.append(el('h3', { text:'🛡️ نصائح الشراء الآمن' }),
+    el('ul', { class:'tiplist' }, ['عاين القطعة بنفسك قبل ما تدفع، ولا تحوّل فلوس مقدّم لأحد ما تعرفه.', 'قابل البائع في مكان عام وواضح، ويفضّل مع أحد يعرف في القطع.', 'اطلب صور واضحة من كل الجهات، وصورة للختم أو التوقيع إن وجد.', 'لا تثق بسعر رخيص بشكل غريب، خاصة في الفضيات والأحجار الكريمة.', 'القطع الأثرية المحمية بالقانون ممنوع بيعها وشراؤها.', 'إذا شكّيت في إعلان، اضغط «🚩 إبلاغ» ونراجعه خلال 24 ساعة.'].map(t => el('li', { text:t }))),
+    el('button', { class:'btn', type:'button', text:'فهمت 👍', onclick:close })));
+}
+function catsSheet(){
+  sheet((b, close) => b.append(el('h3', { text:'🗂️ الأقسام' }),
+    el('div', { class:'catgrid' }, CATS.map(([id, ic, n]) => el('button', { type:'button', onclick:() => { S.cat = id; saveS(); drawCats(); load(true); close(); scrollTo({ top:0, behavior:'smooth' }); } }, el('b', { text:ic }), n))),
+    el('button', { class:'btn ghost', type:'button', text:'إغلاق', onclick:close })));
+}
+const LAST = LS.get('arsa-last', 0); LS.set('arsa-last', Date.now());
 function report(a){
   sheet((b, close) => {
     let why = '';
@@ -534,6 +648,14 @@ function sell(edit){
   });
 }
 $('sellBtn').onclick = () => sell(null);
+$('tipsBtn').onclick = tips;
+(function(){
+  const I = { home:'<path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z"/>', grid:'<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/>', heart:'<path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.6 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/>', user:'<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.2-3.7 4-5.5 7.5-5.5s6.3 1.8 7.5 5.5"/>' };
+  const sv = k => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + I[k] + '</svg>';
+  const T = [['home','الرئيسية',() => { S.cat = 'all'; saveS(); drawCats(); load(true); scrollTo({ top:0, behavior:'smooth' }); }], ['grid','الأقسام',catsSheet], ['plus','أعلن',() => sell(null)], ['heart','المفضلة',favSheet], ['user','حسابي',() => ME ? mySheet() : loginSheet(null)]];
+  $('tabbar').innerHTML = T.map(([k, n], i) => '<button type="button" data-i="' + i + '"' + (i === 0 ? ' aria-current="true"' : '') + '>' + (k === 'plus' ? '<span class="plus">＋</span>' : sv(k)) + '<span>' + n + '</span></button>').join('');
+  $('tabbar').onclick = e => { const b = e.target.closest('[data-i]'); if(b) T[+b.dataset.i][2](); };
+})();
 
 drawCats(); drawGov(); drawCounts(); load(true);
 /* pull down to refresh */
