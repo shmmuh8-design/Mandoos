@@ -5,7 +5,7 @@
   "description": "المندوس — تطبيق آيفون (Capacitor)",
   "scripts": {
     "build": "rm -rf www && mkdir -p www && cp ../index.html ../privacy.html ../support.html ../config.js ../gate-bg.jpg ../cairo-800.woff ../cairo-600.woff www/",
-    "assets": "capacitor-assets generate --ios --iconBackgroundColor '#b0521c' --splashBackgroundColor '#b0521c' --splashBackgroundColorDark '#3b2414'"
+    "assets": "capacitor-assets generate --ios --iconBackgroundColor '#37153f' --splashBackgroundColor '#37153f' --splashBackgroundColorDark '#22072e'"
   },
   "dependencies": {
     "@capacitor/core": "^7.0.0",
