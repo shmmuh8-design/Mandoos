@@ -1,7 +1,7 @@
 # بناء تطبيق المندوس للآيفون على أجهزة ماك في Codemagic ورفعه إلى TestFlight
 workflows:
   mandoos-ios:
-    name: المندوس — آيفون
+    name: سوق التراث — آيفون
     max_build_duration: 60
     instance_type: mac_mini_m2
     working_directory: ios-app
