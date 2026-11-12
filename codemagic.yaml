@@ -30,9 +30,11 @@ workflows:
         script: |
           PLIST=ios/App/App/Info.plist
           /usr/libexec/PlistBuddy -c "Delete :CFBundleDisplayName" $PLIST || true
-          /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string المندوس" $PLIST
-          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string المندوس يحتاج الصور عشان ترفع صور القطعة اللي تبي تبيعها" $PLIST || true
-          /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string المندوس يحتاج الكاميرا عشان تصوّر القطعة اللي تبي تبيعها" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string سوق التراث" $PLIST
+          /usr/libexec/PlistBuddy -c "Delete :NSPhotoLibraryUsageDescription" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string سوق التراث يحتاج الصور عشان ترفع صور القطعة اللي تبي تبيعها" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Delete :NSCameraUsageDescription" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string سوق التراث يحتاج الكاميرا عشان تصوّر القطعة اللي تبي تبيعها" $PLIST || true
           /usr/libexec/PlistBuddy -c "Set :CFBundleDevelopmentRegion ar" $PLIST || true
           /usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations array" $PLIST || true
           /usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations:0 string ar" $PLIST || true
