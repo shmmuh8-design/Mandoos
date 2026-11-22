@@ -747,7 +747,7 @@ function sell(edit){
     const fillArea = () => area.replaceChildren(...GOV[gov.value].map(a => el('option', { value:a, text:a, selected:a === (d.area || S.area) })));
     gov.onchange = fillArea; fillArea();
     const catBox = el('div', { class:'chips' }), condBox = el('div', { class:'chips' });
-    const drawC = () => { catBox.replaceChildren(...CATS.slice(1).map(([id, ic, n]) => el('button', { class:'chip', type:'button', 'aria-pressed':String(cat === id), text:ic + ' ' + n, onclick:() => { cat = id; drawC(); } }))); condBox.replaceChildren(...COND.map(([id, n]) => el('button', { class:'chip', type:'button', 'aria-pressed':String(cond === id), text:n, onclick:() => { cond = id; drawC(); } }))); };
+    const drawC = () => { catBox.replaceChildren(...CATS.slice(1).filter(c => c[0] !== 'heritage').map(([id, ic, n]) => el('button', { class:'chip', type:'button', 'aria-pressed':String(cat === id), text:ic + ' ' + n, onclick:() => { cat = id; drawC(); } }))); condBox.replaceChildren(...COND.map(([id, n]) => el('button', { class:'chip', type:'button', 'aria-pressed':String(cond === id), text:n, onclick:() => { cond = id; drawC(); } }))); };
     drawC();
     const thumbs = el('div', { class:'thumbs' }), file = el('input', { type:'file', accept:'image/*', multiple:true, id:'sFile', hidden:true });
     const drawTh = () => { thumbs.replaceChildren(...photos.map((p, i) => el('div', { class:'th' }, el('img', { src:p.url, alt:'صورة ' + (i + 1) }), el('button', { class:'x', type:'button', 'aria-label':'شيل الصورة', text:'✕', onclick:() => { photos.splice(i, 1); drawTh(); } }))), photos.length < 6 ? el('label', { class:'addph', for:'sFile', 'aria-label':'أضف صور', text:'📷' }) : null); };
@@ -891,6 +891,15 @@ body::before,.head{background:rgba(238,240,255,.92);backdrop-filter:blur(12px)}
 footer{color:#6c6890}
 #gate.ng{background:radial-gradient(120% 80% at 50% 0%,#6b45f2 0%,#3a2aa3 55%,#1c1260 100%)!important}
 .hbtns .ib{background:#fff;color:#4b2fd6;border:1px solid #e1def8}
+.card .t{color:#1d1640}
+.card .img{background:#efeefe}
+.sel option{background:#fff;color:#1d1640}
+.inp,textarea,.sheet select{background:#fff!important;border-color:#e1def8!important;color:#1d1640!important}
+.sheet{border-top:0;box-shadow:0 -10px 30px rgba(75,47,214,.15)}
+.tips b{color:#5b3df5}
+.btn{border:0}
+.btn.ghost{background:#fff;color:#4b2fd6;border:1.5px solid #e1def8}
+.reshead h2{color:#1d1640}
 </style>
 <script>
 (function(){
