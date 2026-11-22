@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
+<script>try{var t=localStorage.getItem("souq-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>السوق العام</title>
@@ -589,6 +590,7 @@ function settingsSheet(){
     el('div', { class:'setlist' },
       row('👤', ME ? 'حسابي وإعلاناتي' : 'تسجيل الدخول', () => { close(); ME ? mySheet() : loginSheet(null); }, ME ? (ME.name || '') : ''),
       row('♡', 'مفضلتي', () => { close(); favSheet(); }, String(FAV.length || '')),
+      row('🌓', 'المظهر', () => { const c = ['auto','light','dark']; let t = 'auto'; try{ t = localStorage.getItem('souq-theme') || 'auto'; }catch(e){} t = c[(c.indexOf(t) + 1) % 3]; try{ localStorage.setItem('souq-theme', t); }catch(e){} if(t === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', t); close(); toast(t === 'auto' ? '🌓 المظهر: تلقائي مع الجوال' : t === 'dark' ? '🌙 الوضع الليلي' : '☀️ الوضع النهاري'); }, (() => { let t = 'auto'; try{ t = localStorage.getItem('souq-theme') || 'auto'; }catch(e){} return t === 'dark' ? 'ليلي' : t === 'light' ? 'نهاري' : 'تلقائي'; })()),
       row('🛡️', 'نصائح الشراء الآمن', () => { close(); tips(); }),
       row('📤', 'شارك السوق العام', () => { close(); $('shareApp').click(); }),
       link('🔒', 'سياسة الخصوصية', 'privacy.html'),
@@ -907,6 +909,72 @@ footer{color:#6c6890}
 .catlist button.on{border-color:#5b3df5!important;box-shadow:0 0 0 2px #5b3df5}
 .sheet,.sheet h3,.sheet p,.sheet label,.sheet li{color:#1d1640}
 .sheet .hint{color:#6c6890}
+
+/* ===== الوضع الليلي للتصميم الجديد ===== */
+@media (prefers-color-scheme:dark){
+:root:root:root:not([data-zz]):not([data-zz2]):not([data-zz3]):not([data-theme="light"]){--bg:#140f33;--surface:#1f1850;--sunk:#18123f;--line:#2f2768;--fg:#efeaff;--muted:#a9a2d6;--copper:#a48bff;--copper-soft:#2b2370;color-scheme:dark}
+html:not([data-theme="light"]) html,html:not([data-theme="light"]) body{background:#120d2e}
+html:not([data-theme="light"]) body{background:linear-gradient(180deg,#1a1240 0%,#120d2e 45%,#0e0a26 100%) fixed;color:#efeaff}
+html:not([data-theme="light"]) body::before,html:not([data-theme="light"]) .head{background:rgba(18,13,46,.92)}
+html:not([data-theme="light"]) .ib,html:not([data-theme="light"]) .hbtns .ib{background:#1f1850;color:#c9bcff;border-color:#2f2768;box-shadow:none}
+html:not([data-theme="light"]) .search{background:#1f1850;border-color:#2f2768;box-shadow:none}
+html:not([data-theme="light"]) .search input{color:#efeaff}
+html:not([data-theme="light"]) .search span{color:#a48bff}
+html:not([data-theme="light"]) .cat{background:#1f1850!important;border-color:#2f2768!important;color:#e6e0ff!important;box-shadow:none}
+html:not([data-theme="light"]) .cat[aria-pressed="true"]{border-color:#8b6bff!important;box-shadow:0 0 0 2px #8b6bff!important;color:#c9bcff!important}
+html:not([data-theme="light"]) .tips,html:not([data-theme="light"]) .sel{background:#1f1850;border-color:#2f2768;color:#efeaff}
+html:not([data-theme="light"]) .sel option{background:#1f1850;color:#efeaff}
+html:not([data-theme="light"]) .reshead h2,html:not([data-theme="light"]) .secT{color:#efeaff}
+html:not([data-theme="light"]) .card{background:#1f1850;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+html:not([data-theme="light"]) .card .t,html:not([data-theme="light"]) .card .body{color:#efeaff}
+html:not([data-theme="light"]) .card .img{background:#2a2268}
+html:not([data-theme="light"]) .pill.cop{background:#2b2370;color:#c9bcff}
+html:not([data-theme="light"]) .btn.ghost{background:#1f1850;color:#c9bcff;border-color:#2f2768}
+html:not([data-theme="light"]) .sheet{background:#18123f;color:#efeaff;box-shadow:0 -10px 30px rgba(0,0,0,.4)}
+html:not([data-theme="light"]) .sheet h3,html:not([data-theme="light"]) .sheet p,html:not([data-theme="light"]) .sheet label,html:not([data-theme="light"]) .sheet li{color:#efeaff}
+html:not([data-theme="light"]) .sheet .hint{color:#a9a2d6}
+html:not([data-theme="light"]) .seller{background:#1f1850;border-color:#2f2768}
+html:not([data-theme="light"]) .chip{background:#1f1850;color:#efeaff;border-color:#2f2768}
+html:not([data-theme="light"]) .inp,html:not([data-theme="light"]) textarea,html:not([data-theme="light"]) .sheet select{background:#1f1850!important;border-color:#2f2768!important;color:#efeaff!important}
+html:not([data-theme="light"]) .setlist button,html:not([data-theme="light"]) .setlist a,html:not([data-theme="light"]) .catlist button{background:#1f1850!important;border-color:#2f2768!important;color:#efeaff!important;box-shadow:none}
+html:not([data-theme="light"]) #tabbar{background:rgba(31,24,80,.92);border-color:#2f2768;box-shadow:0 12px 30px rgba(0,0,0,.45)}
+html:not([data-theme="light"]) #tabbar button{color:#9b94c9}
+html:not([data-theme="light"]) #tabbar button[aria-current="true"]{color:#c9bcff}
+html:not([data-theme="light"]) #tabbar .plus{border-color:#1f1850}
+html:not([data-theme="light"]) .toast{background:#efeaff;color:#1d1640}
+html:not([data-theme="light"]) footer{color:#a9a2d6}
+}
+:root:root:root:not([data-zz]):not([data-zz2]):not([data-zz3])[data-theme="dark"]{--bg:#140f33;--surface:#1f1850;--sunk:#18123f;--line:#2f2768;--fg:#efeaff;--muted:#a9a2d6;--copper:#a48bff;--copper-soft:#2b2370;color-scheme:dark}
+html[data-theme="dark"] html,html[data-theme="dark"] body{background:#120d2e}
+html[data-theme="dark"] body{background:linear-gradient(180deg,#1a1240 0%,#120d2e 45%,#0e0a26 100%) fixed;color:#efeaff}
+html[data-theme="dark"] body::before,html[data-theme="dark"] .head{background:rgba(18,13,46,.92)}
+html[data-theme="dark"] .ib,html[data-theme="dark"] .hbtns .ib{background:#1f1850;color:#c9bcff;border-color:#2f2768;box-shadow:none}
+html[data-theme="dark"] .search{background:#1f1850;border-color:#2f2768;box-shadow:none}
+html[data-theme="dark"] .search input{color:#efeaff}
+html[data-theme="dark"] .search span{color:#a48bff}
+html[data-theme="dark"] .cat{background:#1f1850!important;border-color:#2f2768!important;color:#e6e0ff!important;box-shadow:none}
+html[data-theme="dark"] .cat[aria-pressed="true"]{border-color:#8b6bff!important;box-shadow:0 0 0 2px #8b6bff!important;color:#c9bcff!important}
+html[data-theme="dark"] .tips,html[data-theme="dark"] .sel{background:#1f1850;border-color:#2f2768;color:#efeaff}
+html[data-theme="dark"] .sel option{background:#1f1850;color:#efeaff}
+html[data-theme="dark"] .reshead h2,html[data-theme="dark"] .secT{color:#efeaff}
+html[data-theme="dark"] .card{background:#1f1850;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+html[data-theme="dark"] .card .t,html[data-theme="dark"] .card .body{color:#efeaff}
+html[data-theme="dark"] .card .img{background:#2a2268}
+html[data-theme="dark"] .pill.cop{background:#2b2370;color:#c9bcff}
+html[data-theme="dark"] .btn.ghost{background:#1f1850;color:#c9bcff;border-color:#2f2768}
+html[data-theme="dark"] .sheet{background:#18123f;color:#efeaff;box-shadow:0 -10px 30px rgba(0,0,0,.4)}
+html[data-theme="dark"] .sheet h3,html[data-theme="dark"] .sheet p,html[data-theme="dark"] .sheet label,html[data-theme="dark"] .sheet li{color:#efeaff}
+html[data-theme="dark"] .sheet .hint{color:#a9a2d6}
+html[data-theme="dark"] .seller{background:#1f1850;border-color:#2f2768}
+html[data-theme="dark"] .chip{background:#1f1850;color:#efeaff;border-color:#2f2768}
+html[data-theme="dark"] .inp,html[data-theme="dark"] textarea,html[data-theme="dark"] .sheet select{background:#1f1850!important;border-color:#2f2768!important;color:#efeaff!important}
+html[data-theme="dark"] .setlist button,html[data-theme="dark"] .setlist a,html[data-theme="dark"] .catlist button{background:#1f1850!important;border-color:#2f2768!important;color:#efeaff!important;box-shadow:none}
+html[data-theme="dark"] #tabbar{background:rgba(31,24,80,.92);border-color:#2f2768;box-shadow:0 12px 30px rgba(0,0,0,.45)}
+html[data-theme="dark"] #tabbar button{color:#9b94c9}
+html[data-theme="dark"] #tabbar button[aria-current="true"]{color:#c9bcff}
+html[data-theme="dark"] #tabbar .plus{border-color:#1f1850}
+html[data-theme="dark"] .toast{background:#efeaff;color:#1d1640}
+html[data-theme="dark"] footer{color:#a9a2d6}
 </style>
 <script>
 (function(){
