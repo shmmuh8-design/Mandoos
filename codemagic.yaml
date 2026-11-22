@@ -1,7 +1,7 @@
 # بناء تطبيق المندوس للآيفون على أجهزة ماك في Codemagic ورفعه إلى TestFlight
 workflows:
   mandoos-ios:
-    name: سوق التراث — آيفون
+    name: السوق العام — آيفون
     max_build_duration: 60
     instance_type: mac_mini_m2
     working_directory: ios-app
@@ -30,11 +30,11 @@ workflows:
         script: |
           PLIST=ios/App/App/Info.plist
           /usr/libexec/PlistBuddy -c "Delete :CFBundleDisplayName" $PLIST || true
-          /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string سوق التراث" $PLIST
+          /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string السوق العام" $PLIST
           /usr/libexec/PlistBuddy -c "Delete :NSPhotoLibraryUsageDescription" $PLIST || true
-          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string سوق التراث يحتاج الصور عشان ترفع صور القطعة اللي تبي تبيعها" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string السوق العام يحتاج الصور عشان ترفع صور القطعة اللي تبي تبيعها" $PLIST || true
           /usr/libexec/PlistBuddy -c "Delete :NSCameraUsageDescription" $PLIST || true
-          /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string سوق التراث يحتاج الكاميرا عشان تصوّر القطعة اللي تبي تبيعها" $PLIST || true
+          /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string السوق العام يحتاج الكاميرا عشان تصوّر القطعة اللي تبي تبيعها" $PLIST || true
           /usr/libexec/PlistBuddy -c "Set :CFBundleDevelopmentRegion ar" $PLIST || true
           /usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations array" $PLIST || true
           /usr/libexec/PlistBuddy -c "Add :CFBundleLocalizations:0 string ar" $PLIST || true
@@ -48,7 +48,7 @@ workflows:
         script: xcode-project use-profiles
       - name: رقم البناء
         script: |
-          sed -i '' 's/MARKETING_VERSION = [0-9.]*;/MARKETING_VERSION = 1.1;/g' ios/App/App.xcodeproj/project.pbxproj   # رقم النسخة في المتجر
+          sed -i '' 's/MARKETING_VERSION = [0-9.]*;/MARKETING_VERSION = 1.2;/g' ios/App/App.xcodeproj/project.pbxproj   # رقم النسخة في المتجر
           cd ios/App
           agvtool new-version -all $((BUILD_NUMBER + 1))
       - name: بناء ملف IPA
