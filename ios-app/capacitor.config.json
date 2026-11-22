@@ -2,9 +2,9 @@
   "appId": "com.salemaljabri.mandoos",
   "appName": "السوق العام",
   "webDir": "www",
-  "backgroundColor": "#f2f1ee",
+  "backgroundColor": "#041431",
   "ios": {
     "contentInset": "never",
-    "backgroundColor": "#f2f1ee"
+    "backgroundColor": "#041431"
   }
 }
