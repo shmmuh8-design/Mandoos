@@ -346,6 +346,7 @@ footer,footer a{color:#9fb6d9!important}
 <body>
 
 <div class="wrap" dir="rtl" lang="ar">
+  <section class="hero3" aria-label="السوق العام"><img src="hero.jpg" alt="السوق العام — بيع وشراء كل شي بدون وسيط"></section>
   <header class="head">
     <div class="brand">
       <div class="logo"><span class="lg3d" aria-hidden="true">🛒</span><span>السوق العام<small>بيع واشترِ كل شي في عُمان</small></span></div>
@@ -361,9 +362,9 @@ footer,footer a{color:#9fb6d9!important}
 
   <div class="cats" id="cats" role="group" aria-label="الأقسام"></div>
 
-  <section class="mandoos" id="mandoosBanner">
-    <div><h2>🏺 ركن التراث</h2><p>خناجر وفضيات وأحجار كريمة وعملات ونحاسيات، وكل شي قديم له قصة. بِع واشترِ مباشرة بدون وسيط.</p><p style="font-size:.82rem;margin-top:8px;opacity:.8">⚠️ يُمنع بيع القطع الأثرية المحمية بالقانون.</p></div>
-    <div style="display:flex;flex-direction:column;align-items:center;gap:8px"><span class="art" aria-hidden="true">🗝️</span><button type="button" id="goMandoos">تصفّح التراث ‹</button></div>
+  <section class="mandoos addb" id="mandoosBanner" role="button" aria-label="أضف إعلانك الآن">
+    <div><h2>أضف إعلانك الآن</h2><p>اعرض أغراضك مجاناً، ويوصلك المشتري على الواتساب</p></div>
+    <span class="mega" aria-hidden="true">📣</span><button type="button" id="goMandoos" aria-label="أضف إعلان">‹</button>
   </section>
 
   <div id="recentBox" hidden><div class="secT">👁️ شاهدتها مؤخرًا</div><div class="rail" id="recent"></div></div>
@@ -454,7 +455,9 @@ async function load(reset = true){
 let qT; const reload = () => { clearTimeout(qT); qT = setTimeout(() => load(true), 300); };
 
 /* ---------- filters ---------- */
-function drawCats(){ $('cats').replaceChildren(...CATS.map(([id, ic, n]) => el('button', { class:'cat', type:'button', 'aria-pressed':String(S.cat === id), onclick:() => { S.cat = id; saveS(); drawCats(); load(true); } }, el('b', { text:ic }), n))); $('mandoosBanner').hidden = S.cat !== 'all'; }
+const MAIN = ['all','cars','realestate','phones','furniture','fashion','appliances','sports','kids','animals','heritage'];
+const SHORT = { all:'الكل', phones:'إلكترونيات', furniture:'أثاث', fashion:'أزياء', appliances:'أجهزة منزلية', sports:'رياضة', kids:'أطفال', animals:'مواشي', heritage:'تراث' };
+function drawCats(){ $('cats').replaceChildren(...CATS.filter(c => MAIN.includes(c[0])).map(([id, ic, n]) => el('button', { class:'cat', type:'button', 'aria-pressed':String(S.cat === id), onclick:() => { S.cat = id; saveS(); drawCats(); load(true); } }, el('b', { text:ic }), SHORT[id] || n)), el('button', { class:'cat more', type:'button', 'aria-pressed':String(!MAIN.includes(S.cat)), onclick:() => catsSheet() }, el('b', { text:'•••' }), 'المزيد')); $('mandoosBanner').hidden = S.cat !== 'all'; }
 function drawGov(){
   $('gov').replaceChildren(el('option', { value:'', text:'كل عُمان' }), ...Object.keys(GOV).map(g => el('option', { value:g, text:g, selected:g === S.gov })));
   $('area').hidden = !S.gov;
@@ -464,13 +467,13 @@ $('gov').onchange = () => { S.gov = $('gov').value; S.area = ''; saveS(); drawGo
 $('area').onchange = () => { S.area = $('area').value; saveS(); load(true); };
 $('sort').value = S.sort; $('sort').onchange = () => { S.sort = $('sort').value; saveS(); load(true); };
 $('q').oninput = () => { S.q = $('q').value; reload(); };
-$('goMandoos').onclick = () => { S.cat = 'heritage'; saveS(); drawCats(); load(true); scrollTo({ top:0, behavior:'smooth' }); };
+$('goMandoos').onclick = () => $('sellBtn').click(); $('mandoosBanner').onclick = e => { if(e.target.id !== 'goMandoos') $('sellBtn').click(); };
 $('moreBtn').onclick = () => load(false);
 
 /* ---------- grid ---------- */
 function drawGrid(){
   const L = ADS.filter(a => !HIDDEN.has(a.id));
-  $('resTitle').textContent = (S.cat === 'all' ? 'كل الإعلانات' : catName(S.cat)) + (S.area ? ' في ' + S.area : S.gov ? ' في ' + S.gov : '');
+  $('resTitle').textContent = (S.cat === 'all' ? '🔥 أحدث الإعلانات' : catName(S.cat)) + (S.area ? ' في ' + S.area : S.gov ? ' في ' + S.gov : '');
   $('resN').textContent = L.length ? L.length + (MORE ? '+' : '') + ' إعلان' : '';
   const g = $('grid'); g.replaceChildren();
   if(LOADING && !ADS.length) g.append(el('div', { class:'empty', text:'جاري التحميل…' }));
@@ -827,6 +830,67 @@ $('shareApp').onclick = () => shareKit({ title:'شارك السوق العام',
 .shk-x{margin-top:16px;width:100%;border:1px solid #d8dbe0;background:none;border-radius:14px;padding:12px;font:inherit;font-weight:700;color:inherit;cursor:pointer}
 .shk-t{position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#16181d;color:#fff;padding:10px 16px;border-radius:999px;font-weight:700;z-index:9999;max-width:calc(100% - 32px);text-align:center;font-family:inherit}
 @media (prefers-color-scheme:dark){.shk{background:#1c1f25;color:#eef0f3}.shk p{color:#a2a8b3}.shk-x{border-color:#3a3f48}.shk-t{background:#eef0f3;color:#16181d}}
+
+/* ===== v3: تصميم شات جي بي تي — فاتح، بنفسجي-أزرق وبرتقالي ===== */
+:root:root:root:not([data-zz]):not([data-zz2]){
+  --bg:#eef0ff; --surface:#ffffff; --sunk:#e9e8fb; --line:#e1def8; --fg:#1d1640; --muted:#6c6890;
+  --copper:#5b3df5; --copper-ink:#fff; --copper-soft:#ecE8ff; --star:#ff9f1c; --gold-d:#ff8a1f;
+  --plum:linear-gradient(135deg,#7b5cff,#4b2fd6); --g-grad:linear-gradient(180deg,#ffc070,#ff8a1f);
+  --shadow:0 2px 6px rgba(75,47,214,.06),0 10px 24px rgba(75,47,214,.10); color-scheme:light}
+html,body{background:#eef0ff}
+body{background:linear-gradient(180deg,#e9e7ff 0%,#f1f2ff 40%,#eef3ff 100%) fixed;color:var(--fg)}
+.hero3{margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:calc(env(safe-area-inset-top,0px) + 6px) 16px 26px;background:radial-gradient(90% 70% at 50% 85%,#7a4cff 0%,rgba(122,76,255,0) 60%),linear-gradient(180deg,#3a2aa3 0%,#4430c2 55%,#6b45f2 100%);border-radius:0 0 30px 30px;display:flex;justify-content:center;position:relative;overflow:hidden}
+.hero3::before,.hero3::after{content:"";position:absolute;border-radius:50%;filter:blur(30px);opacity:.5}
+.hero3::before{width:160px;height:160px;background:#a98bff;left:-50px;top:30px}
+.hero3::after{width:140px;height:140px;background:#ff9f45;right:-50px;bottom:-30px;opacity:.35}
+.hero3 img{position:relative;width:min(100%,360px);height:auto;display:block;-webkit-mask:radial-gradient(75% 80% at 50% 50%,#000 70%,transparent 100%);mask:radial-gradient(75% 80% at 50% 50%,#000 70%,transparent 100%);animation:h3in .8s ease-out both}
+@keyframes h3in{from{opacity:0;transform:translateY(10px) scale(.96)}}
+body::before,.head{background:rgba(238,240,255,.92);backdrop-filter:blur(12px)}
+.head{box-shadow:none;border-radius:0 0 18px 18px;margin-top:-18px;padding-top:12px}
+.brand .logo,.hart{display:none!important}
+.brand{min-height:0}
+.ib{background:#fff;border:1px solid var(--line);color:#4b2fd6;box-shadow:0 2px 8px rgba(75,47,214,.08)}
+.search{background:#fff;border:1.5px solid #e1def8;box-shadow:0 8px 22px rgba(75,47,214,.10);border-radius:999px}
+.search input{color:var(--fg)}
+.search span{color:#5b3df5}
+.cats{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;overflow:visible;padding:4px 0 6px}
+@media (max-width:480px){.cats{grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}}
+.cat{width:auto!important;min-width:0!important;height:auto!important;aspect-ratio:.86;padding:6px 2px!important;border-radius:16px!important;background:#fff!important;border:1px solid #ebe8fb!important;color:#2a2450!important;font-size:.64rem!important;line-height:1.2;box-shadow:0 6px 14px rgba(75,47,214,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.cat b{width:auto!important;height:auto!important;background:none!important;box-shadow:none!important;font-size:1.55rem!important;filter:drop-shadow(0 4px 4px rgba(0,0,0,.18))}
+.cat.more b{font-size:1rem!important;color:#5b3df5;letter-spacing:1px}
+.cat[aria-pressed="true"]{border-color:#5b3df5!important;box-shadow:0 0 0 2px #5b3df5,0 8px 18px rgba(91,61,245,.25)!important;color:#4b2fd6!important}
+.mandoos.addb{display:flex;align-items:center;gap:10px;cursor:pointer;margin-top:14px;padding:16px 16px;border-radius:22px;border:0;background:linear-gradient(110deg,#5b3df5 0%,#7b5cff 60%,#9b7bff 100%);color:#fff;box-shadow:0 12px 26px rgba(91,61,245,.35)}
+.mandoos.addb::after{display:none}
+.mandoos.addb>div{flex:1;min-width:0;display:block!important;width:auto!important}
+.mandoos.addb h2{margin:0;color:#fff;font:800 1.15rem/1.25 var(--display)!important;white-space:nowrap}
+.mandoos.addb p{margin:2px 0 0;opacity:.9;font-size:.78rem!important;line-height:1.4}
+.mandoos.addb .mega{font-size:2.3rem;flex:none;filter:drop-shadow(0 6px 6px rgba(0,0,0,.25));animation:mega 2.4s ease-in-out infinite;transform-origin:70% 60%}
+@keyframes mega{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(6deg) scale(1.06)}}
+.mandoos.addb button{flex:none;width:38px;height:38px;border-radius:50%;padding:0;background:#fff;color:#5b3df5;font:800 1.3rem/1 var(--display);box-shadow:none}
+.tips{background:#fff;border:1px solid #ebe8fb;color:var(--fg)}
+.sel{background:#fff;border:1px solid #e1def8;color:var(--fg)}
+.reshead h2,.secT{color:#1d1640}
+.card{background:#fff;border:0;box-shadow:0 8px 20px rgba(75,47,214,.10)}
+.card .body{color:var(--fg)}
+.card .body .price{background:linear-gradient(180deg,#ffb15c,#ff8a1f);color:#fff;box-shadow:0 4px 12px rgba(255,138,31,.4)}
+.card .heart{background:#fff;color:#5b3df5}
+.pill.cop{background:#ecE8ff;color:#4b2fd6}
+.btn{background:linear-gradient(135deg,#7b5cff,#4b2fd6);color:#fff}
+.btn.ghost{background:#fff;color:#4b2fd6;border-color:#e1def8}
+.btn.gold,.bigprice{background:linear-gradient(180deg,#ffb15c,#ff8a1f);color:#fff}
+.sheet{background:#f4f4ff;color:var(--fg)}
+.seller{background:#fff;border-color:#ebe8fb}
+.seller .av{background:linear-gradient(135deg,#7b5cff,#4b2fd6);color:#fff}
+.chip{background:#fff;color:var(--fg);border-color:#e1def8}
+.chip[aria-pressed="true"]{background:#5b3df5;border-color:#5b3df5;color:#fff}
+#tabbar{left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom,0px));height:68px;padding:0 6px;border-radius:24px;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border:1px solid #ebe8fb;box-shadow:0 12px 30px rgba(75,47,214,.18)}
+#tabbar button{color:#7a7699;height:68px}
+#tabbar button[aria-current="true"]{color:#5b3df5}
+#tabbar .plus{background:linear-gradient(135deg,#7b5cff,#4b2fd6);color:#fff;border:4px solid #fff;box-shadow:0 10px 22px rgba(91,61,245,.45)}
+.toast{background:#1d1640;color:#fff}
+footer{color:#6c6890}
+#gate.ng{background:radial-gradient(120% 80% at 50% 0%,#6b45f2 0%,#3a2aa3 55%,#1c1260 100%)!important}
+.hbtns .ib{background:#fff;color:#4b2fd6;border:1px solid #e1def8}
 </style>
 <script>
 (function(){
